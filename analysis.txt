@@ -1,0 +1,566 @@
+
+================ BASIC COUNTS ================
+Listings actually fetched : 3800
+Rentals actually fetched  : 1450
+Projects actually fetched : 440
+
+================ Q1 / Q3 ================
+Q1 total_listing_records : 3800
+Q3 active_listings       : 2998
+Inactive listings        : 802
+
+================ Q2 DUPLICATE INVESTIGATION ================
+Total listing records : 3800
+Unique property signatures : 3800
+Duplicate groups : 0
+Records inside duplicate groups : 0
+
+Top duplicate groups:
+
+================ Q4 CORRUPT INVESTIGATION ================
+Obvious corrupt candidates: 21
+100-3003022 | ['non-positive price'] | Nitesh Pavilion | kharadi | floor 18 / 28 | carpet 886 | super 1159 | price -7730000
+MAG-3000932 | ['floor > total_floors'] | Prestige Enclave | kothrud | floor 11 / 7 | carpet 840 | super 1142 | price 9300000
+100-3001548 | ['floor > total_floors'] | Prestige Grand | aundh | floor 41 / 31 | carpet 318 | super 442 | price 3700000
+ZER-3000380 | ['carpet_area > super_built_up_area'] | My Home Habitat | balewadi | floor 1 / 12 | carpet 1060 | super 699 | price 5520000
+100-3000174 | ['non-positive price'] | Sobha Crest | hinjewadi | floor 2 / 14 | carpet 831 | super 1104 | price -8590000
+DWE-3001307 | ['floor > total_floors'] | Sobha Park | viman nagar | floor 43 / 29 | carpet 791 | super 1136 | price 9340000
+100-3001067 | ['floor > total_floors'] | My Home Heights | hadapsar | floor 8 / 4 | carpet 1198 | super 1693 | price 10160000
+SQU-3000591 | ['non-positive price'] | Adarsh Serenity | kothrud | floor 12 / 24 | carpet 1596 | super 2234 | price -15890000
+SQU-3000419 | ['non-positive price'] | Kolte Patil Vista | kharadi | floor 5 / 7 | carpet 899 | super 1222 | price -7140000
+100-3002344 | ['non-positive price'] | Rohan Vista | hadapsar | floor 9 / 10 | carpet 1126 | super 1607 | price -9730000
+MAG-3001986 | ['non-positive price'] | Mantri Residency | hinjewadi | floor 2 / 21 | carpet 144 | super 187 | price -10770000
+DWE-3003186 | ['floor > total_floors'] | Adarsh Woods | hadapsar | floor 41 / 32 | carpet 840 | super 1152 | price 10130000
+DWE-3001849 | ['carpet_area > super_built_up_area'] | Brigade Habitat | wakad | floor 2 / 20 | carpet 1497 | super 889 | price 7240000
+100-3000236 | ['carpet_area > super_built_up_area'] | Sobha Grand | wakad | floor 8 / 18 | carpet 1812 | super 1262 | price 8490000
+100-3000608 | ['carpet_area > super_built_up_area'] | Mantri Park | balewadi | floor 5 / 6 | carpet 1729 | super 1206 | price 8750000
+SQU-3001698 | ['floor > total_floors'] | Brigade Habitat | magarpatta | floor 34 / 20 | carpet 764 | super 1077 | price 8170000
+MAG-3001979 | ['non-positive price'] | Godrej Heights | kothrud | floor 12 / 16 | carpet 885 | super 1252 | price -11500000
+DWE-3000235 | ['carpet_area > super_built_up_area'] | Salarpuria Enclave | magarpatta | floor 4 / 27 | carpet 1788 | super 1066 | price 8740000
+MAG-3001263 | ['carpet_area > super_built_up_area'] | Mantri Habitat | hadapsar | floor 0 / 6 | carpet 153 | super 102 | price 9860000
+DWE-3000299 | ['carpet_area > super_built_up_area'] | Lodha Willows | kharadi | floor 9 / 12 | carpet 2398 | super 1600 | price 15920000
+100-3001543 | ['floor > total_floors'] | Nitesh Enclave | wakad | floor 29 / 14 | carpet 1196 | super 1561 | price 9650000
+
+================ Q5 HADAPSAR RENT ================
+Hadapsar rental records : 151
+Total monthly rent      : 5335700
+
+================ Q6 2BHK PRICE / SQFT ================
+Eligible 2BHK records: 968
+Average price/sqft: 18314.23
+
+================ Q7 COSTLIEST PROJECT ================
+Project ID : P30394
+Name       : Brigade Park
+Price max  : 99.9
+
+================ Q8 LAST 7 DAYS ================
+Window: 2026-09-03 00:00:00+05:30 to 2026-09-10 00:00:00+05:30
+Listings in window: 128
+
+================ Q9 FAKE INVESTIGATION ================
+Contacts appearing >=3 times: 586
+
+CONTACT: +912002574181 COUNT: 31
+MAG-3002640 | Puravankara Willows | wakad | magichomes | agent
+DWE-3003591 | Shriram Elite Phase 1 | magarpatta | dwelling | agent
+MAG-3000665 | Casagrand Meadows | kothrud | magichomes | agent
+ZER-3003475 | Sobha Elite Phase 1 | viman nagar | zerobroker | agent
+SQU-3001262 | Shriram Serenity | magarpatta | squarelane | agent
+ZER-3000413 | Shriram Park | kharadi | zerobroker | agent
+ZER-3002073 | Salarpuria Serenity | hadapsar | zerobroker | agent
+100-3002598 | Lodha Crest | kharadi | 100acres | agent
+ZER-3003360 | PURAVANKARA GRAND | kothrud | zerobroker | agent
+DWE-3002710 | Aparna Terraces | hinjewadi | dwelling | agent
+
+CONTACT: +912009819040 COUNT: 30
+ZER-3001513 | Kolte Patil Willows | kharadi | zerobroker | agent
+MAG-3001920 | Kolte Patil Boulevard | hadapsar | magichomes | agent
+SQU-3001267 | Rohan Park | kharadi | squarelane | agent
+ZER-3003419 | puravankara grand | magarpatta | zerobroker | agent
+MAG-3000402 | Century Pavilion | aundh | magichomes | agent
+100-3001429 | Puravankara Meadows | aundh | 100acres | agent
+DWE-3000977 | Godrej Heights | aundh | dwelling | agent
+DWE-3003454 | Century-Willows | aundh | dwelling | agent
+SQU-3001363 | My Home Willows | magarpatta | squarelane | agent
+MAG-3000989 | Aparna Park | viman nagar | magichomes | agent
+
+CONTACT: +912006085798 COUNT: 30
+DWE-3002858 | Brigade Woods | wakad | dwelling | agent
+ZER-3000134 | Shriram Boulevard | baner | zerobroker | agent
+ZER-3001323 | Kolte Patil Greens | hadapsar | zerobroker | agent
+100-3000888 | Shriram Elite | viman nagar | 100acres | agent
+DWE-3001648 | Brigade Crest | magarpatta | dwelling | agent
+DWE-3000917 | My Home Pavilion | viman nagar | dwelling | agent
+100-3003139 | Sobha Residency | viman nagar | 100acres | agent
+100-3002250 | Lodha Heights | viman nagar | 100acres | agent
+ZER-3002659 | Adarsh Terraces | hadapsar | zerobroker | agent
+100-3000368 | My Home Pavilion | magarpatta | 100acres | agent
+
+CONTACT: +912009460980 COUNT: 29
+ZER-3001479 | Shriram Park | kharadi | zerobroker | agent
+100-3002123 | Rohan Woods | baner | 100acres | agent
+MAG-3003171 | Sobha Greens | aundh | magichomes | agent
+DWE-3002258 | My Home Pavilion | hinjewadi | dwelling | agent
+100-3001997 | Lodha Heights | hadapsar | 100acres | agent
+DWE-3001223 | Lodha Elite | wakad | dwelling | agent
+100-3003029 | Sobha Greens | wakad | 100acres | agent
+100-3002257 | Godrej Meadows | hinjewadi | 100acres | agent
+MAG-3001722 | Prestige Sanctuary | wakad | magichomes | agent
+DWE-3003504 | assetz sanctuary | hinjewadi | dwelling | agent
+
+CONTACT: +912009027125 COUNT: 29
+100-3000496 | Sobha Habitat | kothrud | 100acres | agent
+100-3003348 | Nitesh Willows Phase 1 | balewadi | 100acres | agent
+SQU-3001036 | Rohan Crest | balewadi | squarelane | agent
+ZER-3000384 | Lodha Terraces | hadapsar | zerobroker | agent
+MAG-3003167 | Lodha Enclave | baner | magichomes | agent
+ZER-3001108 | My Home Woods | hadapsar | zerobroker | agent
+100-3000993 | Shriram Enclave | hinjewadi | 100acres | agent
+ZER-3003303 | Lodha Heights Phase 1 | hadapsar | zerobroker | agent
+MAG-3000833 | Shriram Enclave | wakad | magichomes | agent
+ZER-3002484 | Shriram Grand | baner | zerobroker | agent
+
+CONTACT: +912001427722 COUNT: 29
+ZER-3002809 | Prestige Boulevard | aundh | zerobroker | agent
+ZER-3000515 | Casagrand Woods | wakad | zerobroker | agent
+SQU-3001641 | Casagrand Boulevard | aundh | squarelane | agent
+MAG-3000975 | Kolte Patil Pavilion | kharadi | magichomes | agent
+SQU-3001912 | Puravankara Elite | balewadi | squarelane | agent
+100-3003343 | Mantri-Crest | wakad | 100acres | agent
+100-3000879 | Salarpuria Serenity | wakad | 100acres | agent
+ZER-3000851 | Aparna Greens | hadapsar | zerobroker | agent
+ZER-3002352 | Kolte Patil Heights | kharadi | zerobroker | agent
+100-3001492 | Century Greens | hinjewadi | 100acres | agent
+
+CONTACT: +912006064871 COUNT: 29
+SQU-3002968 | Shriram Willows | viman nagar | squarelane | agent
+MAG-3000899 | Aparna Boulevard | balewadi | magichomes | agent
+DWE-3000300 | Century Terraces | viman nagar | dwelling | agent
+ZER-3002523 | Assetz Elite | baner | zerobroker | agent
+ZER-3001717 | Aparna Park | wakad | zerobroker | agent
+ZER-3003145 | Shriram Terraces | kothrud | zerobroker | agent
+ZER-3002601 | Mantri Crest | magarpatta | zerobroker | agent
+SQU-3002415 | Adarsh Boulevard | wakad | squarelane | agent
+DWE-3002401 | Rohan Enclave | kharadi | dwelling | agent
+DWE-3000925 | My Home Elite | kothrud | dwelling | agent
+
+CONTACT: +912002255305 COUNT: 29
+100-3002778 | Shriram Boulevard | hinjewadi | 100acres | agent
+DWE-3003470 | MY HOME PAVILION | viman nagar | dwelling | agent
+ZER-3002981 | Rohan Vista | magarpatta | zerobroker | agent
+ZER-3002410 | My Home Enclave | magarpatta | zerobroker | agent
+DWE-3000078 | Rohan Boulevard | hinjewadi | dwelling | agent
+DWE-3003447 | brigade grand | baner | dwelling | agent
+MAG-3001812 | Salarpuria Pavilion | hadapsar | magichomes | agent
+DWE-3003506 | Sobha  Enclave | kharadi | dwelling | agent
+ZER-3002866 | Nitesh Greens | aundh | zerobroker | agent
+SQU-3001670 | Casagrand Boulevard | hinjewadi | squarelane | agent
+
+CONTACT: +912002642467 COUNT: 25
+100-3002056 | Godrej Grand | baner | 100acres | agent
+100-3003544 | CENTURY GRAND | balewadi | 100acres | agent
+ZER-3002670 | Godrej Meadows | magarpatta | zerobroker | agent
+ZER-3003547 | Godrej Residency Apartments | kothrud | zerobroker | agent
+ZER-3003677 | Nitesh Elite Apartments | magarpatta | zerobroker | agent
+DWE-3003596 | KOLTE PATIL HEIGHTS | baner | dwelling | agent
+MAG-3002765 | Nitesh Grand | viman nagar | magichomes | agent
+100-3003426 | My Home Grand Phase 1 | aundh | 100acres | agent
+100-3000720 | Brigade Park | wakad | 100acres | agent
+MAG-3003777 | Assetz Vista | aundh | magichomes | agent
+
+CONTACT: +912008344844 COUNT: 22
+SQU-3001592 | Puravankara Meadows | aundh | squarelane | agent
+DWE-3000360 | Sobha Heights | magarpatta | dwelling | agent
+ZER-3000147 | Prestige Meadows | aundh | zerobroker | agent
+MAG-3003665 | Aparna  Boulevard | aundh | magichomes | agent
+MAG-3001945 | Century Sanctuary | hinjewadi | magichomes | agent
+DWE-3002544 | Assetz Pavilion | hadapsar | dwelling | agent
+MAG-3000339 | Casagrand Park | wakad | magichomes | agent
+DWE-3000622 | Casagrand Woods | kothrud | dwelling | agent
+ZER-3001041 | Prestige Habitat | aundh | zerobroker | agent
+DWE-3003747 | Assetz  Terraces | hinjewadi | dwelling | agent
+
+CONTACT: +912002380640 COUNT: 19
+DWE-3002649 | Sobha Greens | hinjewadi | dwelling | agent
+100-3003574 | Shriram-Enclave | hinjewadi | 100acres | agent
+SQU-3001179 | Assetz Habitat | baner | squarelane | agent
+DWE-3000633 | Brigade Park | hinjewadi | dwelling | agent
+ZER-3003752 | adarsh park | hadapsar | zerobroker | agent
+DWE-3002554 | Assetz Park | wakad | dwelling | agent
+MAG-3002476 | Rohan Enclave | hinjewadi | magichomes | agent
+100-3001155 | Puravankara Residency | hadapsar | 100acres | agent
+ZER-3000768 | Assetz Pavilion | kothrud | zerobroker | agent
+SQU-3001964 | Mantri Heights | hinjewadi | squarelane | agent
+
+CONTACT: +912004249280 COUNT: 18
+SQU-3003336 | Kolte Patil Crest Phase 1 | kharadi | squarelane | agent
+ZER-3003693 | Salarpuria Elite Phase 1 | balewadi | zerobroker | agent
+DWE-3000692 | Assetz Serenity | viman nagar | dwelling | agent
+ZER-3000445 | Nitesh Grand | kothrud | zerobroker | agent
+SQU-3001754 | Lodha Crest | wakad | squarelane | agent
+DWE-3002233 | Casagrand Habitat | wakad | dwelling | agent
+DWE-3000871 | Sobha Woods | kharadi | dwelling | agent
+DWE-3002917 | My Home Terraces | balewadi | dwelling | agent
+ZER-3000439 | Casagrand Heights | baner | zerobroker | agent
+ZER-3001901 | Mantri Park | baner | zerobroker | agent
+
+CONTACT: +912007826250 COUNT: 16
+MAG-3002599 | Rohan Enclave | hinjewadi | magichomes | agent
+SQU-3001161 | Brigade Serenity | aundh | squarelane | owner
+DWE-3000436 | Assetz Boulevard | kharadi | dwelling | agent
+ZER-3000036 | Kolte Patil Habitat | viman nagar | zerobroker | owner
+MAG-3000583 | Brigade Habitat | hinjewadi | magichomes | agent
+MAG-3003279 | The Mantri Willows | magarpatta | magichomes | builder
+ZER-3001042 | Kolte Patil Boulevard | viman nagar | zerobroker | agent
+ZER-3001260 | Mantri Pavilion | wakad | zerobroker | owner
+ZER-3002800 | Casagrand Habitat | kharadi | zerobroker | builder
+SQU-3003053 | Adarsh Enclave | magarpatta | squarelane | agent
+
+CONTACT: +912004418955 COUNT: 14
+SQU-3002615 | Rohan Grand | magarpatta | squarelane | owner
+MAG-3001257 | Century Boulevard | wakad | magichomes | builder
+MAG-3002808 | Brigade Pavilion | hadapsar | magichomes | agent
+100-3000941 | Rohan Willows | viman nagar | 100acres | agent
+SQU-3001776 | Aparna Park | kharadi | squarelane | agent
+100-3000958 | Salarpuria Elite | hinjewadi | 100acres | agent
+MAG-3000195 | Puravankara Elite | aundh | magichomes | agent
+100-3002701 | Aparna Meadows | viman nagar | 100acres | agent
+100-3002244 | Prestige Woods | viman nagar | 100acres | owner
+ZER-3002746 | Nitesh Boulevard | hinjewadi | zerobroker | agent
+
+CONTACT: +912008812189 COUNT: 13
+100-3003473 | adarsh pavilion | magarpatta | 100acres | agent
+ZER-3003355 | assetz pavilion | hadapsar | zerobroker | owner
+MAG-3000771 | Puravankara Meadows | magarpatta | magichomes | owner
+100-3002472 | Mantri Grand | balewadi | 100acres | owner
+MAG-3002758 | Assetz Crest | wakad | magichomes | agent
+100-3000955 | Nitesh Habitat | magarpatta | 100acres | agent
+SQU-3003068 | Godrej Greens | kothrud | squarelane | agent
+SQU-3002156 | My Home Vista | hadapsar | squarelane | agent
+100-3003289 | LODHA SANCTUARY | viman nagar | 100acres | owner
+ZER-3000318 | Nitesh Pavilion | kothrud | zerobroker | owner
+
+CONTACT: +912005612702 COUNT: 12
+SQU-3000897 | Sobha Pavilion | wakad | squarelane | agent
+DWE-3002209 | Aparna Greens | aundh | dwelling | agent
+100-3001635 | Rohan Enclave | viman nagar | 100acres | owner
+DWE-3000283 | Lodha Meadows | kothrud | dwelling | agent
+DWE-3002054 | Kolte Patil Enclave | kharadi | dwelling | agent
+100-3002577 | Adarsh Crest | kharadi | 100acres | agent
+ZER-3002612 | Kolte Patil Greens | wakad | zerobroker | agent
+100-3000574 | Prestige Greens | hinjewadi | 100acres | agent
+DWE-3000492 | Nitesh Meadows | balewadi | dwelling | agent
+100-3002224 | Puravankara Habitat | baner | 100acres | owner
+
+CONTACT: +912006988636 COUNT: 12
+ZER-3000844 | Century Habitat | hadapsar | zerobroker | owner
+ZER-3001075 | Mantri Elite | wakad | zerobroker | owner
+SQU-3003241 | The Sobha Heights | magarpatta | squarelane | agent
+MAG-3001598 | Salarpuria Boulevard | baner | magichomes | agent
+ZER-3000486 | Adarsh Grand | wakad | zerobroker | agent
+100-3003244 | Puravankara Meadows Apartments | aundh | 100acres | owner
+MAG-3002741 | Nitesh Greens | wakad | magichomes | agent
+SQU-3000618 | Mantri Grand | aundh | squarelane | agent
+100-3002714 | Rohan Residency | balewadi | 100acres | agent
+DWE-3000806 | Adarsh Willows | baner | dwelling | agent
+
+CONTACT: +912000730436 COUNT: 12
+ZER-3000331 | Assetz Grand | kothrud | zerobroker | agent
+SQU-3002502 | Brigade Woods | hinjewadi | squarelane | owner
+ZER-3000890 | Shriram Heights | aundh | zerobroker | agent
+DWE-3002311 | Godrej Elite | kothrud | dwelling | owner
+DWE-3002616 | Century Terraces | hinjewadi | dwelling | agent
+DWE-3001014 | Sobha Boulevard | kothrud | dwelling | agent
+100-3000013 | My Home Sanctuary | wakad | 100acres | builder
+100-3000273 | Godrej Heights | aundh | 100acres | owner
+SQU-3003800 | Rohan Enclave | hinjewadi | squarelane | owner
+DWE-3001867 | Puravankara Heights | magarpatta | dwelling | agent
+
+CONTACT: +912000949166 COUNT: 12
+100-3001888 | Assetz Sanctuary | hadapsar | 100acres | owner
+SQU-3001740 | Aparna Residency | kharadi | squarelane | owner
+DWE-3001296 | Mantri Pavilion | aundh | dwelling | agent
+MAG-3003642 | ADARSH PAVILION | baner | magichomes | builder
+100-3002227 | Mantri Willows | viman nagar | 100acres | owner
+SQU-3001047 | Assetz Sanctuary | kothrud | squarelane | agent
+MAG-3001883 | Puravankara Terraces | kothrud | magichomes | builder
+MAG-3002471 | Shriram Pavilion | hadapsar | magichomes | agent
+100-3002711 | Prestige Serenity | kharadi | 100acres | agent
+SQU-3001726 | Sobha Sanctuary | kothrud | squarelane | agent
+
+CONTACT: +912008295581 COUNT: 12
+ZER-3003467 | My  Home  Grand | hinjewadi | zerobroker | agent
+MAG-3003294 | salarpuria sanctuary | hadapsar | magichomes | owner
+ZER-3003398 | MANTRI RESIDENCY | hinjewadi | zerobroker | owner
+ZER-3002271 | Century Greens | wakad | zerobroker | agent
+100-3000037 | Lodha Sanctuary | hinjewadi | 100acres | agent
+SQU-3003577 | shriram park | kothrud | squarelane | owner
+100-3002592 | Century Habitat | magarpatta | 100acres | agent
+100-3001128 | Godrej Terraces | balewadi | 100acres | agent
+DWE-3000944 | Mantri Boulevard | kharadi | dwelling | agent
+100-3003533 | MY HOME WOODS | magarpatta | 100acres | agent
+
+CONTACT: +912006392749 COUNT: 12
+SQU-3001769 | Brigade Grand | hinjewadi | squarelane | owner
+MAG-3001624 | Mantri Sanctuary | aundh | magichomes | agent
+ZER-3001289 | Lodha Pavilion | aundh | zerobroker | agent
+100-3000510 | Adarsh Terraces | kharadi | 100acres | agent
+SQU-3000240 | Mantri Serenity | baner | squarelane | owner
+ZER-3000970 | Nitesh Elite | magarpatta | zerobroker | agent
+MAG-3001862 | Rohan Elite | wakad | magichomes | agent
+MAG-3002336 | Prestige Park | aundh | magichomes | agent
+ZER-3003039 | Casagrand Terraces | magarpatta | zerobroker | owner
+MAG-3003051 | Sobha Elite | viman nagar | magichomes | owner
+
+CONTACT: +912000402387 COUNT: 12
+100-3001759 | Shriram Heights | baner | 100acres | owner
+MAG-3003436 | Kolte Patil Vista | magarpatta | magichomes | owner
+DWE-3002894 | Adarsh Pavilion | wakad | dwelling | owner
+100-3002525 | Prestige Sanctuary | magarpatta | 100acres | agent
+MAG-3002387 | Mantri Willows | baner | magichomes | builder
+SQU-3002376 | Rohan Park | baner | squarelane | builder
+SQU-3001822 | Salarpuria Grand | viman nagar | squarelane | builder
+SQU-3002983 | Kolte Patil Vista | magarpatta | squarelane | agent
+SQU-3002475 | Salarpuria Meadows | baner | squarelane | owner
+100-3002518 | Assetz Vista | kothrud | 100acres | owner
+
+CONTACT: +912004122182 COUNT: 11
+DWE-3002501 | Puravankara Sanctuary | wakad | dwelling | builder
+ZER-3003381 | The Sobha Enclave | kharadi | zerobroker | agent
+100-3000408 | Rohan Heights | balewadi | 100acres | agent
+DWE-3000117 | Nitesh Grand | aundh | dwelling | owner
+MAG-3000845 | Assetz Willows | kharadi | magichomes | owner
+ZER-3002405 | Lodha Crest | viman nagar | zerobroker | owner
+MAG-3001157 | Sobha Heights | kharadi | magichomes | owner
+DWE-3002253 | Brigade Greens | wakad | dwelling | agent
+SQU-3000385 | Casagrand Grand | wakad | squarelane | owner
+MAG-3002240 | Kolte Patil Pavilion | aundh | magichomes | agent
+
+CONTACT: +912001737054 COUNT: 11
+SQU-3000161 | Casagrand Greens | hinjewadi | squarelane | owner
+MAG-3002458 | Godrej Sanctuary | kothrud | magichomes | agent
+MAG-3003018 | Mantri Pavilion | viman nagar | magichomes | agent
+ZER-3003401 | Prestige-Serenity | baner | zerobroker | builder
+MAG-3000774 | Puravankara Elite | viman nagar | magichomes | agent
+100-3000153 | Godrej Greens | magarpatta | 100acres | builder
+DWE-3000223 | Salarpuria Park | kothrud | dwelling | agent
+100-3001332 | Brigade Meadows | baner | 100acres | agent
+MAG-3000726 | Godrej Greens | wakad | magichomes | agent
+SQU-3001786 | Assetz Sanctuary | aundh | squarelane | owner
+
+CONTACT: +912008785794 COUNT: 11
+100-3001734 | Aparna Pavilion | aundh | 100acres | agent
+DWE-3003627 | The Rohan Boulevard | balewadi | dwelling | builder
+DWE-3001426 | Sobha Habitat | aundh | dwelling | agent
+100-3002856 | Salarpuria Habitat | balewadi | 100acres | owner
+DWE-3002726 | Godrej Park | baner | dwelling | agent
+MAG-3000424 | Rohan Residency | wakad | magichomes | agent
+100-3000236 | Sobha Grand | wakad | 100acres | agent
+100-3000333 | Aparna Greens | kothrud | 100acres | builder
+ZER-3002893 | Rohan Enclave | aundh | zerobroker | agent
+SQU-3002147 | Shriram Enclave | baner | squarelane | agent
+
+CONTACT: +912003156505 COUNT: 11
+SQU-3002658 | Godrej Elite | viman nagar | squarelane | agent
+MAG-3003150 | Adarsh Vista | baner | magichomes | agent
+DWE-3002455 | Salarpuria Greens | aundh | dwelling | agent
+DWE-3001268 | Aparna Woods | hinjewadi | dwelling | owner
+SQU-3002834 | Rohan Willows | wakad | squarelane | agent
+SQU-3000682 | Casagrand Vista | baner | squarelane | agent
+DWE-3003726 | Casagrand Vista | kothrud | dwelling | owner
+DWE-3000145 | Casagrand Boulevard | aundh | dwelling | owner
+ZER-3001386 | Brigade Crest | hadapsar | zerobroker | agent
+DWE-3002492 | My Home Meadows | kothrud | dwelling | agent
+
+CONTACT: +912004998004 COUNT: 11
+100-3000156 | Brigade Serenity | hadapsar | 100acres | owner
+MAG-3000978 | Lodha Willows | magarpatta | magichomes | agent
+ZER-3001057 | Prestige Heights | kothrud | zerobroker | agent
+ZER-3001033 | Adarsh Terraces | viman nagar | zerobroker | agent
+DWE-3003219 | Kolte Patil Heights | baner | dwelling | builder
+ZER-3002288 | Aparna Terraces | baner | zerobroker | agent
+SQU-3002905 | Century Elite | hadapsar | squarelane | agent
+SQU-3001919 | Rohan Willows | balewadi | squarelane | agent
+DWE-3000697 | Puravankara Habitat | kothrud | dwelling | agent
+ZER-3001915 | Nitesh Elite | viman nagar | zerobroker | agent
+
+CONTACT: +912007813330 COUNT: 11
+MAG-3002154 | Lodha Crest | kothrud | magichomes | owner
+ZER-3001568 | Rohan Woods | kharadi | zerobroker | owner
+MAG-3001952 | Century Heights | kharadi | magichomes | agent
+100-3002440 | Salarpuria Elite | balewadi | 100acres | agent
+SQU-3003016 | Brigade Habitat | magarpatta | squarelane | agent
+SQU-3001475 | Century Park | viman nagar | squarelane | agent
+DWE-3000178 | My Home Boulevard | balewadi | dwelling | agent
+DWE-3000489 | Casagrand Boulevard | balewadi | dwelling | owner
+100-3000088 | My Home Serenity | magarpatta | 100acres | builder
+SQU-3002302 | Puravankara Serenity | kharadi | squarelane | owner
+
+CONTACT: +912006054656 COUNT: 11
+SQU-3003330 | ADARSH SERENITY | kharadi | squarelane | builder
+100-3000893 | Puravankara Serenity | kothrud | 100acres | agent
+MAG-3003247 | brigade grand | kothrud | magichomes | builder
+ZER-3001398 | Kolte Patil Pavilion | aundh | zerobroker | owner
+DWE-3002379 | My Home Elite | magarpatta | dwelling | owner
+DWE-3001818 | Godrej Woods | kothrud | dwelling | agent
+ZER-3000491 | Aparna Park | wakad | zerobroker | agent
+100-3000523 | Nitesh Habitat | magarpatta | 100acres | agent
+ZER-3003216 | Assetz Habitat | magarpatta | zerobroker | agent
+MAG-3000425 | Mantri Residency | hinjewadi | magichomes | agent
+
+CONTACT: +912008342672 COUNT: 10
+MAG-3000293 | Aparna Park | magarpatta | magichomes | agent
+DWE-3000038 | Lodha Crest | viman nagar | dwelling | owner
+ZER-3000558 | My Home Habitat | hinjewadi | zerobroker | owner
+100-3003036 | Century Sanctuary | baner | 100acres | owner
+SQU-3001383 | Lodha Park | baner | squarelane | owner
+MAG-3000374 | Rohan Enclave | viman nagar | magichomes | agent
+DWE-3002633 | Casagrand Pavilion | kothrud | dwelling | agent
+MAG-3003500 | mantri pavilion | aundh | magichomes | builder
+100-3001255 | Aparna Sanctuary | baner | 100acres | agent
+MAG-3003405 | Adarsh Habitat Apartments | kharadi | magichomes | owner
+
+================ Q10 PROJECT COUNT MISMATCH ================
+Projects with wrong listing count: 317
+P30003 | Nitesh Willows | reported: 7 | actual: 4
+P30004 | Mantri Meadows | reported: 4 | actual: 6
+P30006 | Brigade Pavilion | reported: 4 | actual: 6
+P30007 | Nitesh Crest | reported: 4 | actual: 6
+P30008 | Rohan Terraces | reported: 0 | actual: 4
+P30009 | Puravankara Boulevard | reported: 5 | actual: 6
+P30010 | Lodha Terraces | reported: 0 | actual: 8
+P30011 | Casagrand Pavilion | reported: 3 | actual: 4
+P30012 | My Home Park | reported: 4 | actual: 5
+P30013 | Salarpuria Residency | reported: 7 | actual: 8
+P30014 | Aparna Residency | reported: 5 | actual: 7
+P30015 | Century Grand | reported: 0 | actual: 5
+P30016 | Godrej Park | reported: 3 | actual: 4
+P30018 | Prestige Meadows | reported: 6 | actual: 7
+P30019 | Brigade Elite | reported: 6 | actual: 7
+P30020 | Lodha Heights | reported: 4 | actual: 5
+P30021 | Adarsh Crest | reported: 12 | actual: 3
+P30023 | Adarsh Heights | reported: 1 | actual: 2
+P30026 | Rohan Greens | reported: 7 | actual: 10
+P30028 | Godrej Crest | reported: 2 | actual: 3
+P30030 | My Home Grand | reported: 10 | actual: 13
+P30032 | Century Boulevard | reported: 3 | actual: 4
+P30033 | Brigade Enclave | reported: 2 | actual: 4
+P30034 | Brigade Residency | reported: 6 | actual: 8
+P30035 | Brigade Enclave | reported: 4 | actual: 5
+P30038 | Puravankara Meadows | reported: 4 | actual: 5
+P30039 | Rohan Park | reported: 4 | actual: 6
+P30041 | Puravankara Serenity | reported: 5 | actual: 7
+P30043 | Casagrand Residency | reported: 5 | actual: 6
+P30044 | Nitesh Terraces | reported: 3 | actual: 4
+P30047 | Prestige Sanctuary | reported: 3 | actual: 4
+P30048 | Lodha Residency | reported: 7 | actual: 8
+P30049 | Brigade Sanctuary | reported: 2 | actual: 4
+P30054 | Rohan Enclave | reported: 4 | actual: 6
+P30055 | Aparna Serenity | reported: 7 | actual: 10
+P30056 | Aparna Habitat | reported: 4 | actual: 7
+P30058 | Prestige Heights | reported: 4 | actual: 6
+P30059 | Brigade Sanctuary | reported: 3 | actual: 5
+P30060 | Shriram Terraces | reported: 3 | actual: 4
+P30061 | My Home Greens | reported: 5 | actual: 7
+P30062 | Adarsh Serenity | reported: 0 | actual: 2
+P30063 | Rohan Serenity | reported: 14 | actual: 4
+P30066 | Godrej Pavilion | reported: 0 | actual: 5
+P30067 | Rohan Grand | reported: 3 | actual: 5
+P30069 | Puravankara Greens | reported: 4 | actual: 6
+P30070 | Salarpuria Park | reported: 2 | actual: 3
+P30071 | Century Boulevard | reported: 1 | actual: 3
+P30072 | Salarpuria Enclave | reported: 6 | actual: 9
+P30073 | Mantri Habitat | reported: 5 | actual: 7
+P30074 | Mantri Meadows | reported: 0 | actual: 7
+P30075 | Century Residency | reported: 9 | actual: 5
+P30076 | Century Heights | reported: 4 | actual: 5
+P30077 | Rohan Terraces | reported: 5 | actual: 7
+P30078 | Aparna Serenity | reported: 5 | actual: 6
+P30080 | Salarpuria Sanctuary | reported: 13 | actual: 12
+P30081 | Assetz Heights | reported: 18 | actual: 9
+P30082 | My Home Residency | reported: 14 | actual: 4
+P30083 | Casagrand Woods | reported: 6 | actual: 7
+P30086 | Century Habitat | reported: 2 | actual: 3
+P30087 | Shriram Terraces | reported: 6 | actual: 9
+P30088 | Shriram Heights | reported: 1 | actual: 2
+P30089 | Adarsh Sanctuary | reported: 3 | actual: 5
+P30090 | Lodha Park | reported: 18 | actual: 6
+P30091 | Salarpuria Willows | reported: 13 | actual: 4
+P30092 | Shriram Crest | reported: 3 | actual: 5
+P30094 | Prestige Willows | reported: 5 | actual: 8
+P30095 | My Home Crest | reported: 4 | actual: 5
+P30096 | Assetz Park | reported: 0 | actual: 4
+P30098 | Brigade Terraces | reported: 0 | actual: 2
+P30099 | Century Elite | reported: 10 | actual: 6
+P30100 | Assetz Willows | reported: 6 | actual: 8
+P30101 | Shriram Crest | reported: 6 | actual: 7
+P30103 | Shriram Woods | reported: 4 | actual: 6
+P30104 | Casagrand Pavilion | reported: 0 | actual: 12
+P30105 | Salarpuria Grand | reported: 6 | actual: 8
+P30106 | Godrej Willows | reported: 4 | actual: 5
+P30107 | Brigade Meadows | reported: 10 | actual: 3
+P30108 | Assetz Pavilion | reported: 2 | actual: 3
+P30109 | Casagrand Vista | reported: 5 | actual: 6
+P30110 | Prestige Sanctuary | reported: 5 | actual: 8
+P30116 | Salarpuria Greens | reported: 4 | actual: 7
+P30117 | Brigade Boulevard | reported: 9 | actual: 6
+P30118 | Puravankara Greens | reported: 19 | actual: 7
+P30119 | Brigade Park | reported: 5 | actual: 6
+P30120 | Kolte Patil Grand | reported: 0 | actual: 8
+P30122 | Kolte Patil Serenity | reported: 6 | actual: 7
+P30123 | Century Heights | reported: 3 | actual: 4
+P30124 | Prestige Enclave | reported: 6 | actual: 10
+P30125 | Assetz Woods | reported: 2 | actual: 4
+P30126 | Assetz Serenity | reported: 3 | actual: 6
+P30128 | My Home Willows | reported: 1 | actual: 2
+P30132 | Nitesh Sanctuary | reported: 2 | actual: 3
+P30134 | Casagrand Elite | reported: 0 | actual: 4
+P30136 | Salarpuria Willows | reported: 1 | actual: 2
+P30137 | Adarsh Willows | reported: 6 | actual: 10
+P30138 | Casagrand Habitat | reported: 0 | actual: 6
+P30139 | Prestige Park | reported: 17 | actual: 4
+P30141 | Adarsh Grand | reported: 9 | actual: 5
+P30142 | Mantri Elite | reported: 9 | actual: 10
+P30144 | Lodha Woods | reported: 11 | actual: 4
+
+================ EXTRA INVESTIGATION ================
+
+Listing fields:
+['apartment_name', 'balcony', 'bathroom', 'bedroom', 'carpet_area', 'city_id', 'covered_parking', 'description', 'facing_direction', 'floor', 'furnishing', 'is_live', 'is_verified', 'latitude', 'listing_id', 'listing_url', 'locality', 'longitude', 'posted_at', 'posted_by', 'posted_by_contact', 'posted_by_name', 'price', 'project_id', 'property_type', 'super_built_up_area', 'total_floors', 'website']
+
+Sample timestamp formats:
+2026-04-30T14:57:00
+2026-01-24T18:49:00
+2026-04-28T18:42:00
+2026-07-27T11:57:00
+2026-04-09T14:49:00
+2026-04-18T03:08:00
+2026-06-29T12:04:00
+2026-03-15T03:10:00
+2026-08-04T09:45:00
+2026-04-10T14:02:00
+2026-04-03T14:56:00
+2026-03-27T01:37:00
+2026-01-23T23:10:00
+2026-06-13T06:17:00
+2026-08-09T03:26:00
+2026-05-15T05:07:00
+2026-01-19T14:49:00
+2026-08-12T01:37:00
+2026-01-18T16:09:00
+2026-01-18T19:51:00
+
+Top localities:
+hadapsar 417
+wakad 414
+hinjewadi 414
+aundh 397
+kothrud 382
+magarpatta 375
+baner 369
+kharadi 354
+viman nagar 353
+balewadi 325
+
+================ DONE ================

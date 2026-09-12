@@ -1,0 +1,148 @@
+{
+  "api_key": "REPLACE_WITH_YOUR_API_KEY_BEFORE_SUBMISSION",
+  "candidate": {
+    "name": "Avinash Gupta",
+    "email": "avinashkumargupta306@gmail.com",
+    "repo_url": "https://github.com/logicalavi09/ivy-homes-assignment",
+    "demo_url": "REPLACE_WITH_DEPLOYED_APP_URL"
+  },
+  "answers": {
+    "total_listing_records": 3800,
+    "unique_properties": 3800,
+    "active_listings": 2998,
+    "corrupt_listing_ids": [
+      "100-3000174",
+      "100-3000236",
+      "100-3000608",
+      "100-3001067",
+      "100-3001543",
+      "100-3001548",
+      "100-3002344",
+      "100-3003022",
+      "DWE-3000235",
+      "DWE-3000299",
+      "DWE-3001307",
+      "DWE-3001849",
+      "DWE-3003186",
+      "MAG-3000932",
+      "MAG-3001263",
+      "MAG-3001979",
+      "MAG-3001986",
+      "SQU-3000419",
+      "SQU-3000591",
+      "SQU-3001698",
+      "ZER-3000380"
+    ],
+    "total_monthly_rent": 5335700,
+    "avg_price_per_sqft_2bhk": 18314.23,
+    "costliest_project": {
+      "project_id": "P30394",
+      "price_max_inr": 999000000
+    },
+    "listings_last_7_days": 128,
+    "fake_listing_ids": [
+      "100-3001372",
+      "100-3002878",
+      "MAG-3000012",
+      "MAG-3001311",
+      "MAG-3001932",
+      "SQU-3000349",
+      "ZER-3000796"
+    ],
+    "projects_with_wrong_listing_count": 317
+  },
+  "findings": [
+    {
+      "endpoint": "/v1/listings",
+      "category": "auth",
+      "documented": "API key is supplied as the api_key query parameter.",
+      "actual": "The API rejects the query parameter and requires the X-API-Key request header.",
+      "how_found": "Called /v1/listings with api_key as a query parameter and received an explicit error instructing use of X-API-Key.",
+      "impact": "Clients following the documented authentication method cannot access listings."
+    },
+    {
+      "endpoint": "/auth/login",
+      "category": "auth",
+      "documented": "Login returns token, expires_in=86400, with no refresh flow.",
+      "actual": "Login returns access_token and refresh_token, expires_in=900, token_type=Bearer, and refresh_url=/auth/refresh.",
+      "how_found": "Performed login using the documented endpoint and inspected the actual response.",
+      "impact": "Clients must use a different token field and handle a 15-minute access-token lifetime and refresh flow."
+    },
+    {
+      "endpoint": "/v1/listings",
+      "category": "pagination",
+      "documented": "Pagination uses page and limit and returns page and page_size.",
+      "actual": "Pagination uses offset and limit and returns limit, offset, count, total and has_more.",
+      "how_found": "Fetched consecutive listing pages using offset and inspected the response schema.",
+      "impact": "A client implementing the documented page/page_size contract cannot correctly paginate the dataset."
+    },
+    {
+      "endpoint": "/v1/listings",
+      "category": "completeness",
+      "documented": "The endpoint reports the total number of retrievable records through its pagination metadata.",
+      "actual": "The initial response reported total=3543, but paging to has_more=false yielded 3800 retrievable records.",
+      "how_found": "Paged through the endpoint until has_more=false and counted every returned record.",
+      "impact": "Using the reported total to stop pagination undercounts the dataset by 257 records.",
+      "evidence": []
+    },
+    {
+      "endpoint": "/v1/rentals",
+      "category": "completeness",
+      "documented": "The endpoint reports the total number of retrievable records through its pagination metadata.",
+      "actual": "The initial response reported total=1352, but paging to the end yielded 1450 retrievable records.",
+      "how_found": "Paged through the endpoint until the final page and counted every returned rental record.",
+      "impact": "Using the reported total undercounts the retrievable rental dataset by 98 records.",
+      "evidence": []
+    },
+    {
+      "endpoint": "/v1/projects",
+      "category": "completeness",
+      "documented": "The endpoint reports the total number of retrievable records through its pagination metadata.",
+      "actual": "The initial response reported total=410, but paging to the end yielded 440 retrievable projects.",
+      "how_found": "Paged through the endpoint until the final page and counted every returned project record.",
+      "impact": "Using the reported total undercounts the retrievable project dataset by 30 records.",
+      "evidence": []
+    },
+    {
+      "endpoint": "/v1/projects",
+      "category": "consistency",
+      "documented": "A project's total_listings always agrees with the listing count for that project.",
+      "actual": "317 projects have a reported total_listings value different from the count of retrievable listings with that project_id.",
+      "how_found": "Counted listing records by project_id and compared those counts against every project's total_listings field.",
+      "impact": "Project listing counts cannot be trusted without recomputing them from listing records.",
+      "evidence": [
+        "P30003",
+        "P30004",
+        "P30006",
+        "P30007",
+        "P30008",
+        "P30009",
+        "P30010",
+        "P30011",
+        "P30012",
+        "P30013",
+        "P30014",
+        "P30015",
+        "P30016",
+        "P30018",
+        "P30019",
+        "P30020",
+        "P30021",
+        "P30023",
+        "P30026",
+        "P30028"
+      ]
+    },
+    {
+      "endpoint": "/v1/projects",
+      "category": "units",
+      "documented": "Project price fields are presented as prices.",
+      "actual": "Project price values such as price_max=99.9 are expressed in crore-scale values; converting the maximum 99.9 to rupees gives \u20b9999,000,000.",
+      "how_found": "Inspected project price values and converted the highest value to the INR unit required by question 7.",
+      "impact": "Treating price_max as raw rupees would produce an incorrect costliest-project value.",
+      "evidence": [
+        "P30394"
+      ]
+    }
+  ]
+}
