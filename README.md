@@ -1,263 +1,272 @@
 # Ivy Homes — Software Engineering Internship Assignment
 
-## Overview
+## 1. Project Overview
 
-This repository contains my submission for the Ivy Homes Software Engineering Internship Assignment (September 2026).
+A full-stack submission for the Ivy Homes Software Engineering Internship
+(September 2026). The project:
 
-The assignment involved:
-- Investigating the Ivy Homes API
-- Validating API documentation against observed behavior
-- Retrieving and analyzing the complete available datasets
-- Answering the ten assignment questions
-- Identifying API/documentation discrepancies and data-quality issues
-- Building a frontend for browsing listings, rentals, projects, saved listings, and insights
+1. **Investigates the Ivy Homes public API** (`https://solve.ivy.homes`) — comparing
+   documented behavior against the live API, then downloading and analyzing every
+   retrievable record for the assigned city (Pune).
+2. **Answers the ten assignment questions** from the retrieved dataset and records
+   reproducible evidence in `submission.json`.
+3. **Builds a production-style React application** that browses listings, rentals and
+   projects, manages per-user saved listings, and presents a two-part **Insights
+   dashboard** that surfaces the API's real behavior and data-quality findings.
 
-## Candidate
+### Product features
 
-- Name: Avinash Gupta
-- GitHub: logicalavi09
-- Assigned city: Pune
-- Assigned locality: Hadapsar
+| Page | What it does |
+| ---- | ------------ |
+| `/dashboard` | Signed-in landing page with summary stat cards that link to each section. |
+| `/listings` | Filterable grid of 3,800 property listings (locality, BHK, price, furnishing) with session-aware pagination and local keyword search. |
+| `/listings/:id` | Full property fact sheet; shows `N/A` for every missing field; per-user save heart. |
+| `/rentals` | 1,450 rentals grid with monthly-rent pricing (`₹/month`), shared filters + search. |
+| `/projects` | 440 projects grid with crore-scale INR pricing (`₹99.90 Cr` + full rupee line) and click-through to the project detail page. |
+| `/projects/:id` | Project fact sheet plus the grid of listings belonging to that project. |
+| `/saved` | Per-user bookmarks, keyed by the signed-in user's email; ID-only records self-heal by re-fetching details. |
+| `/insights` | Analyst dashboard: API summary with validated fallback, documented-vs-actual discrepancy bars, "lies" categories, dataset composition, and the 10 assignment answers. |
 
-## Tech Stack
+## 2. Candidate
 
-- Frontend: React + Vite (`frontend/`)
-- API proxy: Vercel Serverless Functions (`api/proxy.js`)
-- API/data investigation: Python
-- Data analysis: Python standard library
-- Version control: Git + GitHub
-- Deployment: Vercel
+- **Name:** Avinash Gupta
+- **Email:** avinashkumargupta306@gmail.com
+- **GitHub:** logicalavi09
+- **Assigned city:** Pune
+- **Assigned locality:** Hadapsar
 
-AI/LLM assistance was used during development for investigation support, implementation guidance, debugging, and documentation.
+Sign in with any assignment demo account (e.g. `demo1@ivy.homes`; the demo passwords
+are provided in the assignment brief and are **not committed** to this repository).
 
----
+## 3. Tech Stack
 
-## Phase 1: Infrastructure and Secure API Proxy
+| Layer | Technology |
+| ----- | ---------- |
+| Frontend | React 18 + Vite 8, React Router (hash routing), Axios |
+| Styling | Plain CSS with dark-mode support; charts are dependency-free CSS bars |
+| API proxy | Vercel Serverless Function (`api/proxy.js`) |
+| Backend API | `https://solve.ivy.homes` (Ivy Homes) |
+| Data investigation | Python 3 (stdlib only) + shell/curl probes |
+| Hosting | Vercel (static SPA + `api/` functions on one server) |
+| Version control | Git + GitHub |
 
-### Security model
+## 4. How to Run Locally
 
-The Ivy Homes API key (`IVY_API_KEY`) is **never exposed to the browser**. The browser only
-talks to a Vercel Serverless Function, which forwards requests to `https://solve.ivy.homes`
-and injects the key into the `X-API-Key` header server-side.
+Prerequisites: Node.js 18+, Python 3.10+, Vercel CLI.
 
+```bash
+# 1. Configure the API key (it is gitignored)
+cp .env.example .env
+#    edit .env and set IVY_API_KEY=<your key>
+
+# 2. Install and build the frontend (vercel.json serves frontend/dist)
+cd frontend
+npm install
+npm run build
+cd ..
+
+# 3. Run the whole app on one port
+vercel dev
+#    open http://localhost:3000   (app + /api/* both served here)
 ```
-Browser ── /api/v1/listings ──▶ Vercel rewrite ──▶ api/proxy.js
-                                                       │
-                                              IVY_API_KEY injected here
-                                                       ▼
-                                      https://solve.ivy.homes/v1/listings
-```
 
-- `vercel.json` serves the frontend and the API from **one server**: `/api/(.*)` is rewritten
-  to `/api/proxy?path=/$1` (preserving the query string), the built SPA in `frontend/dist` is
-  served from the site root (`/assets/*`, `/favicon.svg`), and every other path falls back to
-  `frontend/dist/index.html` so client-side routes survive a refresh.
-- `api/proxy.js` strips the `path` parameter, rebuilds the query string, injects `X-API-Key`
-  from the environment, forwards the browser's `Authorization` header (if present), and passes
-  the upstream status/body back to the client.
-- CORS headers are set on every response so a locally-running frontend can call the local proxy
-  directly; an `ALLOWED_ORIGIN` env var can restrict origins (default `*` for dev).
-- A client-supplied `X-API-Key` is never forwarded — only the server-side one.
+While iterating on the frontend, `npm run build --watch` (from `frontend/`) keeps the
+built `dist/` fresh so `vercel dev` picks up changes automatically.
 
-### Local development
-
-Prerequisites: Node.js 18+, Python 3.10+, and the Vercel CLI.
-
-1. Create `.env` at the repo root (it is gitignored):
-
-   ```bash
-   cp .env.example .env
-   # edit .env and set IVY_API_KEY=...
-   ```
-
-2. Build the frontend once (the repo's `vercel.json` serves `frontend/dist`):
-
-   ```bash
-   cd frontend
-   npm install
-   npm run build
-   cd ..
-   ```
-
-3. Start everything on a single port — the Vercel proxy plus the built SPA:
-
-   ```bash
-   vercel dev
-   # open http://localhost:3000  — both the app and /api/* work here
-   ```
-
-   While developing the frontend you can keep the dist fresh with
-   `npm run build --watch` (from `frontend/`).
-
-#### Alternative: Vite dev server with HMR (two ports)
-
-For hot module reload, run Vite instead and let it proxy `/api` to the Vercel server:
+### Alternative: Vite dev server (hot reload, two ports)
 
 ```bash
 vercel dev                    # terminal 1 — API/proxy on http://localhost:3000
 cd frontend && npm run dev    # terminal 2 — Vite on http://localhost:5173
 ```
 
-Vite's `vite.config.js` proxies `/api → http://localhost:3000`, so the app on
-http://localhost:5173 talks to the same proxy/API as the single-port setup.
-
-At either URL you can verify the proxy (`GET /api/v1/listings`), log in via
-`POST /api/auth/login`, and confirm Authorization header forwarding.
-
-### API key for the data-fetching scripts
-
-The Ivy Homes API key is private and is intentionally NOT committed to this repository.
-For the Python data scripts, set it in the shell instead:
-
-```bash
-export IVY_API_KEY="YOUR_API_KEY"
-python fetch_data.py
-```
+`vite.config.js` proxies `/api → http://localhost:3000`, so both URLs talk to the same
+proxy and upstream API.
 
 ### Deploying to Vercel
 
 1. Push the repo to GitHub and import it in Vercel (or run `vercel` from the repo root).
-2. Add the secret server-side (never commit it):
+2. Add the key server-side — never commit it: `vercel env add IVY_API_KEY`.
+3. Set Root Directory to the **repo root** and Framework Preset to **Other**. The
+   rewrites in `vercel.json` serve the built SPA from the site root and route `/api/*`
+   through `api/proxy.js`.
 
-   ```bash
-   vercel env add IVY_API_KEY
-   ```
+## 5. Architecture
 
-3. Set the project's Root Directory to the **repo root** and Framework Preset to **Other**
-   (static). Vercel serves `frontend/dist` and the `api/` functions through the rewrites in
-   `vercel.json`. `vercel.json` rewrites map the built SPA to the site root and preserve the
-   `/api` proxying:
+### 5.1 Single-server layout (`vercel.json`)
 
-   - `GET /` → SPA  (index.html from `frontend/dist`)
-   - `GET /dashboard`, `/listings`, … → SPA fallback (server-side routing safe)
-   - `GET /api/v1/listings` → `api/proxy.js` → `solve.ivy.homes` with `X-API-Key`
+The app and API run on **one** origin — no CORS in production, no key in the browser:
 
-   If you prefer the classic Vite deploy (Root Directory = `frontend`), keep the old
-   framework-detected build: restore the `frontend` Root Directory and hosting pipeline and only
-   deploy `api/` separately — the `vercel.json` above is tuned for the repo-root static + API
-   layout.
+- `/api/(.*)` → `api/proxy.js?path=/$1` (query string preserved)
+- `/assets/*`, `/favicon.svg` → files in `frontend/dist`
+- `/(.*)` → `frontend/dist/index.html` (SPA fallback, so client-side routes survive a refresh)
 
----
+### 5.2 Secure API proxy
 
-## Phase 2: Authentication & Token Refresh Engine
+The Ivy Homes API key is **never exposed to the browser**. The browser only talks to a
+serverless function, which injects `X-API-Key` server-side.
 
-### Architecture
+```
+Browser ── /api/v1/listings ──▶ Vercel rewrite ──▶ api/proxy.js
+                                                      │
+                                             X-API-Key injected here (server env)
+                                                      ▼
+                                     https://solve.ivy.homes/v1/listings
+```
+
+`api/proxy.js` strips the internal `path` parameter, rebuilds the query string, injects
+the key, forwards the browser's `Authorization` header (used by the auth flow), and
+passes the upstream status/headers/body back. CORS headers are set so a locally-running
+frontend or the Vite dev server can call the proxy directly (`ALLOWED_ORIGIN` restricts
+this for production if desired). Non-2xx upstream responses are sanitized into short,
+user-facing error messages instead of raw backend dumps.
+
+### 5.3 Authentication & token-refresh engine
+
+Authentication is a full OAuth-style flow behind the axios client:
 
 ```
 LoginPage ──▶ AuthContext.login() ──▶ POST /api/auth/login
-                                           │  (demo password from user input only)
-                                           ▼
-                              { access_token, refresh_token, expires_in=900 }
-                                           │
-                                       setSession() ──▶ localStorage
-                                            ├─ ivy.access_token
-                                            ├─ ivy.refresh_token
-                                            ├─ ivy.user
-                                            └─ ivy.expires_at
+                                          ▼
+                     { access_token, refresh_token, expires_in=900 }
+                                          ▼
+                     setSession() ──▶ localStorage
+                     (access_token, refresh_token, user, expires_at)
 
-Any API call ──▶ axios instance (/api)
-                   │ request interceptor: attach Authorization: Bearer <access_token>
-                   │                      + proactively refresh if within 60s of expiry
-                   ▼
-              401? ──▶ response interceptor ──▶ POST /api/auth/refresh
-                   ▲                                  │
-                   └── retry original request  ◀── update localStorage ◀──┘
-                                                            │
-                                   refresh fails? ──▶ clear localStorage ──▶ redirect #/login
+Any API call ──▶ Axios (baseURL /api)
+   │  request interceptor: attach Authorization: Bearer <token>
+   │                       + proactively refresh if within 60s of expiry
+   ▼
+ 401? ──▶ response interceptor ──▶ POST /api/auth/refresh
+   ▲                                    │  (single shared promise,
+   └── retry original request  ◀────────┘   coalesced across requests)
+                                          ▼
+                      refresh fails? ──▶ clear session ──▶ redirect #/login
 ```
 
-### What was built
+Key points:
 
-- `frontend/src/api/client.js` — an Axios instance with `baseURL: '/api'` (all calls go
-  through the same proxy as Phase 1), plus two interceptors:
-  - **Request:** attaches `Authorization: Bearer <token>` when a token exists, and whenever
-    the token is within 60 seconds of expiry it *proactively* calls `/auth/refresh` so a
-    near-expired token never round-trips through a guaranteed 401.
-  - **Response:** on a `401` it single-refreshes via `/auth/refresh` using the stored
-    refresh token, updates localStorage and retries the original request exactly once.
-    If refresh fails, storage is cleared and the app redirects to `/#/login`.
-  - Concurrent refresh requests are coalesced through a single shared promise so a burst of
-    parallel calls only triggers one `/auth/refresh`.
-- `frontend/src/auth/tokenStorage.js` — localStorage helpers for `access_token`,
-  `refresh_token`, user data and an expiry timestamp. Expiry is computed from the JWT `exp`
-  claim, else from the server's `expires_in`, else a 15-minute fallback.
-- `frontend/src/auth/AuthContext.jsx` — React context that hydrates from localStorage on
-  app mount (so a browser refresh keeps you signed in; an expired-but-refreshable session is
-  refreshed automatically), and exposes `login`, `logout`, `user`, `isAuthenticated`.
-- `frontend/src/pages/LoginPage.jsx` — professional login form with loading and error states
-  (`Invalid credentials` on HTTP 401). The **password is never hardcoded** — it is read from
-  the password field; the demo email `demo1@ivy.homes` is prefilled for convenience.
-- `frontend/src/components/ProtectedRoute.jsx` — route guard; unauthenticated visitors are
-  redirected to `/#/login` (remembering where they came from). `/dashboard`, `/listings`
-  and every child route are wrapped in it.
-- `frontend/src/components/Layout.jsx`, `pages/Dashboard.jsx`, `pages/Listings.jsx` — the
-  signed-in shell with a working **Sign out** button (calls `/api/auth/logout`, then clears
-  local state) and sample protected pages that fetch through the authenticated axios client.
+- Login returns `access_token` + `refresh_token` and `expires_in=900` (not the
+  documented `expires_in=86400` without refresh — see §8). Refresh calls
+  `/api/auth/refresh` with `{ refresh_token }`.
+- The request interceptor re-attaches the token and refreshes **proactively** when the
+  token is within 60s of expiry, so near-expired tokens never round-trip through a 401.
+- The response interceptor retries a 401 exactly once after a single refresh; concurrent
+  401s are coalesced into one `/auth/refresh`. If refresh fails, the session is cleared
+  and the user is redirected to `/login`.
+- Sessions hydrate from localStorage on load, so a refresh keeps you signed in.
+- The typed email is persisted at login so saved data is keyed per-user
+  (`saved_listings_<email>`); logout clears that scope.
 
-### Notes
+### 5.4 Data flow (pagination)
 
-- Routing uses `HashRouter` (`/#/login`, `/#/dashboard`) so deep links survive a browser
-  refresh on Vercel's static hosting without extra rewrites. The interceptor redirect uses
-  `window.location.hash`, so it is router-agnostic.
-- Logout invalidates the server-side session best-effort and always clears client storage.
-- The `/auth/refresh` body is sent as `{ "refresh_token": ... }` (the token field the
-  upstream returns). If the live API expects a different field for a future deployment, it is
-  a one-line change in `frontend/src/api/client.js`.
+The API caps `limit` at 50 and paginates by `offset`/`limit` returning
+`limit, offset, count, total, has_more` (the documented `page`/`page_size` contract is
+wrong — see §8). The UI pages through `has_more` until `false` so the true dataset size
+is always reached.
+
+## 6. Methodology for Data Investigation
+
+1. **Read the documentation first.** Endpoints, request/response schemas and auth were
+   read from the assignment brief and noted as the "documented" contract.
+2. **Probe the live API with `curl`.** Auth was characterized first: the documented
+   `api_key` query parameter is rejected; the key must be sent as the `X-API-Key`
+   header. The login endpoint was called and its real response inspected.
+3. **Download the complete datasets.** `fetch_data.py` (`reachable data/`, gitignored)
+   pages `GET /v1/listings`, `/v1/rentals` and `/v1/projects` with `offset`/`limit=50`
+   until `has_more=false`, saving every record to `data/*.json`.
+4. **Analyze.** Standard-library analysis derived per-dataset totals, locality
+   distributions, medians, rent sums, ₹/sqft averages, last-7-days counts, corrupt/fake
+   IDs, and project listing-count checks (summaries committed as `analysis.txt` and
+   `deep_check.txt`).
+5. **Cross-check documented vs. observed.** Each discrepancy was reproduced (e.g. using
+   the reported `total` stops pagination early; `X-API-Key` required; `expires_in=86400`
+   is actually 900) and recorded with endpoints and impact in `submission.json`.
+6. **Commit evidence.** `fetch_data.py`, the analysis outputs, and `submission.json`
+   stay in the repo; the raw `data/` JSON dumps remain gitignored.
+
+## 7. Truth About the API — Findings
+
+Every finding below was reproduced against the live API and recorded in
+`submission.json#findings`. The list of "lies" (documented vs. actual):
+
+| # | Category | Endpoint | Documented | Actual | Impact |
+| - | -------- | -------- | ---------- | ------ | ------ |
+| 1 | Auth | `/v1/*` | API key sent as `api_key` query param. | Key required as `X-API-Key` **header**; query param rejected. | Clients following the docs cannot authenticate. |
+| 2 | Auth | `/auth/login` | Returns token, `expires_in=86400`, no refresh. | Returns `access_token` + `refresh_token`, `expires_in=900`, `refresh_url=/auth/refresh`. | Must use a different field, 15-min lifetime, and a refresh flow. |
+| 3 | Pagination | `/v1/listings` | Uses `page`/`page_size`. | Uses `offset`/`limit`; returns `limit, offset, count, total, has_more`. | Documented contract cannot paginate the dataset. |
+| 4 | Completeness | `/v1/listings` | `total` = complete record count. | `total=3543` initially but **3,800** records are retrievable (`has_more=false`). | Stop-at-total undercounts by 257. |
+| 5 | Completeness | `/v1/rentals` | `total` = complete record count. | `total=1352` initially but **1,450** retrievable records. | Undercounts by 98. |
+| 6 | Completeness | `/v1/projects` | `total` = complete record count. | `total=410` initially but **440** retrievable projects. | Undercounts by 30. |
+| 7 | Consistency | `/v1/projects` | `total_listings` matches linked listings. | **317** projects disagree with the actual count of listings carrying that `project_id`. | Project listing counts cannot be trusted. |
+| 8 | Units | `/v1/projects` | Project `price_min`/`price_max` presented as prices. | Values are **crore-scale**; P30394 `price_max=99.9` = **₹99,90,00,000**. | Treating them as raw INR gives wrong results. |
+| 9 | Availability | `/v1/analytics/summary` | (documented) summary endpoint. | Returns **404 Not Found** on the live API. | Insights page must fall back to validated numbers. |
+
+**Data quality:** of 3,800 listings, 21 are corrupt (missing/empty core fields) and 7
+are fake (fabricated/placeholder records) — disjoint sets, leaving 3,772 healthy.
+The top locality is **Hadapsar** (417 listings).
+
+## 8. Assignment Answers
+
+All answers are derived from the retrieved dataset and stored in `submission.json`
+(which the Insights page renders directly, so the UI cannot drift from the submission).
+
+| # | Question | Answer |
+| - | -------- | ------ |
+| 1 | Total listing records | **3,800** |
+| 2 | Unique properties | **3,800** |
+| 3 | Active listings (live) | **2,998** |
+| 4 | Corrupt listing IDs | **21** (see `submission.json` / Insights modal) |
+| 5 | Total monthly rent in Hadapsar | **₹53,35,700** |
+| 6 | Average price per sq.ft. for 2 BHK | **₹18,314.23** |
+| 7 | Costliest project | **P30394** — ₹99,90,00,000 |
+| 8 | Listings in the last 7 days | **128** |
+| 9 | Fake listing IDs | **7** (see `submission.json` / Insights modal) |
+| 10 | Projects with wrong listing count | **317** |
+
+## 9. Repository Layout
+
+```
+├── api/proxy.js            # Vercel serverless API proxy (X-API-Key injected server-side)
+├── fetch_data.py           # data-collection evidence (paged to has_more=false)
+├── analysis.txt            # dataset analysis summary (evidence)
+├── deep_check.txt          # deep data-quality check results (evidence)
+├── submission.json         # assignment answers + findings (single source of truth)
+├── vercel.json             # rewrites: /api/* → proxy, static SPA fallback
+├── .env.example            # committed template (real key lives only in .env — gitignored)
+├── frontend/               # React app (Vite)
+│   └── src/
+│       ├── api/client.js            # axios + auth/refresh interceptors
+│       ├── auth/                    # AuthContext, tokenStorage
+│       ├── saved/                   # per-user saved listings (context + storage)
+│       ├── listings/                # shared formatters, filters, local search
+│       ├── insights/                # validated summary constants
+│       ├── components/              # cards, filters, pagination, search, modals
+│       └── pages/                   # Dashboard, Listings, Rentals, Projects,
+│                                    #  ListingDetail, ProjectDetail, Saved, Insights
+└── data/                   # raw API dumps — GITIGNORED (not tracked)
+```
+
+## 10. Security & Cleanup Notes
+
+- **No hardcoded secrets:** a repository-wide scan for the `IVY26-` key prefix found
+  matches only inside the gitignored `.env`. The committed `.env.example` carries an
+  empty placeholder; the key is injected server-side by the proxy.
+- **`data/` and `.env` are 100% gitignored** and not tracked by Git (verified with
+  `git check-ignore`). Raw dataset dumps are regenerable via `fetch_data.py`.
+- **No sensitive technical errors reach the UI.** The client shows friendly copy
+  ("We couldn't load listings right now…", "Listing not found"), and the proxy sanitizes
+  upstream error bodies into short messages.
+- **No debug logging** remains in the client or proxy request path.
+
+## 11. AI Assistance
+
+AI/LLM assistance was used for **investigation support** (structuring the API
+discrepancy analysis and data-quality checks), **implementation guidance** (proxy/auth
+architecture, React components, formatting edge cases), **debugging**, and
+**documentation**. All findings were reproduced and validated against the live API and
+dataset; the analysis scripts and outputs are committed as reproducible evidence.
 
 ---
 
-## Phase 3: Listings Browser with Filters
-
-The `/listings` page is now a filterable card grid at `/api/v1/listings`.
-
-### What was built
-
-- `frontend/src/components/ListingFilters.jsx` — a filter sidebar with:
-  - **Locality** dropdown (the 10 Pune localities in the dataset)
-  - **Bedrooms (BHK)** — `1 / 2 / 3 / 4+`
-  - **Price range** — min/max inputs in ₹ Lakhs with a dedicated *Apply price* button
-  - **Furnishing** — `unfurnished`, `semi-furnished`, `fully-furnished`
-  - Active-filter counter + *Clear* button, and validation for invalid price ranges
-- `frontend/src/components/ListingCard.jsx` — card showing apartment/project name, INR price,
-  locality, BHK, area (sqft) and furnishing, plus *Verified* / *Live* badges.
-- `frontend/src/components/Pagination.jsx` — numbered pager (First/Prev, page window with
-  ellipsis, Next/Last), driven by `offset`/`limit`.
-- `frontend/src/pages/Listings.jsx` — grid layout wired to the axios client from Phase 2
-  (**auth logic untouched**). Select-type filters trigger a new API call immediately; the
-  price range applies on *Apply price*. While fetching, the grid is replaced by a shimmer
-  skeleton; a "No results found" empty state appears when a filter set returns nothing.
-- `frontend/src/listings/filterOptions.js` — the filter option lists and the empty state.
-
-### Pagination
-
-The API caps `limit` at 50, so the page fetches **`limit=50`** with `offset = page × 50`
-and renders up to `ceil(total / 50)` numbered pages using the response's `total`/`has_more`
-(paginating until `has_more=false` matches the Phase 1 finding that `total` undercounts).
-
-### Server-side filter query parameters
-
-Filters are sent as query parameters on `GET /v1/listings` (snake_case, matching the API's
-field style). They are all defined in `filtersToParams()` at the top of
-`frontend/src/pages/Listings.jsx`:
-
-| Filter      | Query params                         |
-| ----------- | ------------------------------------ |
-| Locality    | `locality=hadapsar`                  |
-| BHK exact   | `bedroom=2`                          |
-| BHK 4+      | `bedroom_gte=4`                      |
-| Price range | `min_price=...` / `max_price=...` (INR) |
-| Furnishing  | `furnishing=fully-furnished`         |
-
-If the upstream expects a different parameter name for any filter, adjust the one map
-(`filtersToParams`) and the rest of the UI stays untouched.
-
----
-
-## Running the Python Analysis
-
-```bash
-pip install -r requirements.txt   # if any dependencies are added
-python fetch_data.py              # downloads data/ (gitignored)
-python analyze.py                 # outputs analysis.txt
-python deep_check.py              # outputs deep_check.txt
-```
+*Submitted by Avinash Gupta — September 2026.*

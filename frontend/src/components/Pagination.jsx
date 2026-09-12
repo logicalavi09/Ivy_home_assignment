@@ -13,7 +13,7 @@ function pageItems(current, count) {
   return items
 }
 
-export default function Pagination({ page, pageCount, loading, onPageChange }) {
+export default function Pagination({ page, pageCount, loading, onPageChange, label = 'Listings pages' }) {
   if (pageCount <= 1) return null
 
   const currentPage = Math.min(page, pageCount - 1)
@@ -26,7 +26,7 @@ export default function Pagination({ page, pageCount, loading, onPageChange }) {
   }
 
   return (
-    <nav className="pager" aria-label="Listings pages">
+    <nav className="pager" aria-label={label}>
       <button type="button" disabled={loading || currentPage === 0} onClick={() => goto(0)}>
         First
       </button>

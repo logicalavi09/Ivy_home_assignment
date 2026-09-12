@@ -72,10 +72,6 @@ module.exports = async function handler(req, res) {
     requestInit.body = typeof req.body === "string" ? req.body : JSON.stringify(req.body)
   }
 
-  console.log("Target URL:", url)
-  console.log("Headers being sent:", headers)
-  console.log("Request Body:", req.body)
-
   let upstream
   try {
     const controller = new AbortController()
@@ -83,10 +79,8 @@ module.exports = async function handler(req, res) {
     upstream = await fetch(url, { ...requestInit, signal: controller.signal })
     clearTimeout(timer)
   } catch (error) {
-    console.error("API Error Response:", error.response?.data, error)
     res.status(502).json({
-      error: "Could not reach the upstream API.",
-      detail: error && error.name === "AbortError" ? "Upstream request timed out." : (error && error.message) || "Unknown error",
+      error: "The service could not be reached. Please try again.",
     })
     return
   }
@@ -95,7 +89,21 @@ module.exports = async function handler(req, res) {
   const contentType = upstream.headers.get("content-type") || "application/json"
 
   if (!upstream.ok) {
-    console.error(`API Error Response (${upstream.status}) for ${req.method} ${targetPath}:`, raw.slice(0, 1000))
+    let message
+    try {
+      const body = JSON.parse(raw)
+      message = typeof body?.error === "string" ? body.error
+        : typeof body?.detail === "string" ? body.detail
+        : typeof body?.message === "string" ? body.message
+        : null
+    } catch {
+      message = null
+    }
+    if (!message || message.length > 200) {
+      message = "The service returned an unexpected response. Please try again."
+    }
+    res.status(upstream.status <= 599 ? upstream.status : 502).json({ error: message })
+    return
   }
 
   for (const rateHeader of ["X-RateLimit-Limit", "X-RateLimit-Remaining", "X-RateLimit-Reset"]) {

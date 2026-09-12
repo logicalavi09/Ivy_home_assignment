@@ -1,19 +1,17 @@
 import { useEffect, useMemo, useState } from 'react'
 import client from '../api/client'
-import ListingCard from '../components/ListingCard'
 import ListingFilters from '../components/ListingFilters'
 import Pagination from '../components/Pagination'
+import RentalCard from '../components/RentalCard'
 import SearchBar from '../components/SearchBar'
 import SkeletonGrid from '../components/SkeletonGrid'
 import { applySearch } from '../listings/localSearch'
 import { EMPTY_FILTERS, filtersToParams } from '../listings/filterOptions'
-import { useSaved } from '../saved/SavedContext'
 
 const PAGE_SIZE = 50
 const QUICK_FILTER_FIELDS = new Set(['locality', 'bhk', 'furnishing'])
 
-export default function Listings() {
-  const { isSaved, toggleSave } = useSaved()
+export default function Rentals() {
   const [filters, setFilters] = useState(EMPTY_FILTERS)
   const [applied, setApplied] = useState(EMPTY_FILTERS)
   const [query, setQuery] = useState('')
@@ -23,14 +21,13 @@ export default function Listings() {
   const [hasMore, setHasMore] = useState(false)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [priceError, setPriceError] = useState(null)
 
   useEffect(() => {
     let cancelled = false
     const params = { ...filtersToParams(applied, PAGE_SIZE), offset: page * PAGE_SIZE }
 
     client
-      .get('/v1/listings', { params })
+      .get('/v1/rentals', { params })
       .then(({ data }) => {
         if (cancelled) return
         setRows(data.results || [])
@@ -41,7 +38,7 @@ export default function Listings() {
       .catch(() => {
         if (cancelled) return
         setRows([])
-        setError('We couldn\u2019t load listings right now. Please try again in a moment.')
+        setError('We couldn\u2019t load rentals right now. Please try again in a moment.')
       })
       .finally(() => {
         if (!cancelled) setLoading(false)
@@ -67,33 +64,7 @@ export default function Listings() {
       setApplied(next)
       setPage(0)
       setLoading(true)
-      setPriceError(null)
     }
-    if (changed.some((key) => key === 'minPrice' || key === 'maxPrice')) {
-      setPriceError(null)
-    }
-  }
-
-  function handleApplyPrice() {
-    const min = filters.minPrice ? Number(filters.minPrice) : null
-    const max = filters.maxPrice ? Number(filters.maxPrice) : null
-    if (min != null && min < 0) {
-      setPriceError('Minimum price cannot be negative.')
-      return
-    }
-    if (max != null && max < 0) {
-      setPriceError('Maximum price cannot be negative.')
-      return
-    }
-    if (min != null && max != null && min > max) {
-      setPriceError('Minimum price cannot be greater than the maximum.')
-      return
-    }
-
-    setApplied(filters)
-    setPage(0)
-    setLoading(true)
-    setPriceError(null)
   }
 
   function handleReset() {
@@ -101,7 +72,6 @@ export default function Listings() {
     setApplied(EMPTY_FILTERS)
     setPage(0)
     setLoading(true)
-    setPriceError(null)
   }
 
   const pageCount = Math.max(1, Math.ceil(total / PAGE_SIZE))
@@ -114,19 +84,18 @@ export default function Listings() {
   return (
     <>
       <div className="listings-head">
-        <h1>Listings</h1>
+        <h1>Rentals</h1>
         <p className="tagline">
-          Browse Pune properties. Server-side filters run through the <code>/api</code> proxy —
-          the Axios interceptor keeps you authenticated.
+          Rental properties across Pune. The card price is the <strong>monthly rent</strong> in
+          Indian Rupees, with deposit and maintenance alongside.
         </p>
       </div>
 
       <div className="listings-layout">
         <ListingFilters
           filters={filters}
-          priceError={priceError}
+          showPrice={false}
           onChange={handleFilterChange}
-          onApplyPrice={handleApplyPrice}
           onReset={handleReset}
         />
 
@@ -139,8 +108,8 @@ export default function Listings() {
             <SkeletonGrid />
           ) : rows.length === 0 ? (
             <div className="card empty-state">
-              <h2>No results found</h2>
-              <p className="muted">No listings match the current filters.</p>
+              <h2>No rentals found</h2>
+              <p className="muted">No rentals match the current filters.</p>
               <button type="button" className="ghost" onClick={handleReset}>
                 Clear filters
               </button>
@@ -149,9 +118,9 @@ export default function Listings() {
             <>
               <p className="results-info muted" aria-live="polite">
                 Showing {from.toLocaleString('en-IN')}–{to.toLocaleString('en-IN')} of{' '}
-                {total.toLocaleString('en-IN')} result{total === 1 ? '' : 's'}
+                {total.toLocaleString('en-IN')} rental{total === 1 ? '' : 's'}
               </p>
-              <SearchBar value={query} onChange={setQuery} />
+              <SearchBar value={query} onChange={setQuery} placeholder="Search rentals or keywords…" />
               {searchActive && (
                 <p className="search-hint muted" aria-live="polite">
                   {visibleRows.length === 1
@@ -170,13 +139,8 @@ export default function Listings() {
                 </div>
               ) : (
                 <div className="cards-grid">
-                  {visibleRows.map((listing) => (
-                    <ListingCard
-                      key={listing.listing_id}
-                      listing={listing}
-                      saved={isSaved(listing.listing_id)}
-                      onToggleSave={toggleSave}
-                    />
+                  {visibleRows.map((rental) => (
+                    <RentalCard key={rental.listing_id} rental={rental} />
                   ))}
                 </div>
               )}
@@ -185,6 +149,7 @@ export default function Listings() {
                 pageCount={pageCount}
                 loading={loading}
                 onPageChange={goToPage}
+                label="Rental pages"
               />
             </>
           )}

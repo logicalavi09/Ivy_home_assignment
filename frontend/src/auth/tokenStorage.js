@@ -81,6 +81,12 @@ export function setSession(data) {
   }
 }
 
+export function setUserEmail(email) {
+  if (typeof localStorage === 'undefined') return
+  const current = getUser() || {}
+  localStorage.setItem(USER_KEY, JSON.stringify({ ...current, email }))
+}
+
 export function isTokenExpired(bufferMs = 0) {
   const expiresAt = getExpiresAt()
   if (expiresAt === null) return false

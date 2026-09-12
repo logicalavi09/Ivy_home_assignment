@@ -9,7 +9,7 @@ function friendlyMessage(err) {
   if (status === 401) return 'Invalid credentials. Please check your email and password.'
   if (status === 429) return 'Too many attempts. Please wait a moment and try again.'
   if (err?.response?.data?.error) return String(err.response.data.error)
-  return err?.message || 'Something went wrong. Please try again.'
+  return 'Something went wrong. Please try again.'
 }
 
 export default function LoginPage() {

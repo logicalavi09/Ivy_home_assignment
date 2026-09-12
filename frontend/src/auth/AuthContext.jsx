@@ -6,6 +6,7 @@ import {
   getRefreshToken,
   getUser,
   isTokenExpired,
+  setUserEmail,
 } from '../auth/tokenStorage'
 
 const AuthContext = createContext(null)
@@ -58,6 +59,7 @@ function AuthProvider({ children }) {
 
   const login = useCallback(async (email, password) => {
     const data = await apiLogin(email, password)
+    setUserEmail(email.trim())
     setUser(getUser())
     return data
   }, [])

@@ -1,35 +1,38 @@
-function titleCase(value) {
-  if (!value) return '—'
-  return String(value).replace(/\b\w/g, (c) => c.toUpperCase())
-}
+import { Link } from 'react-router-dom'
+import { areaText, formatInr, titleCase } from '../listings/listingFormat'
 
-function formatInr(value) {
-  if (value == null || Number.isNaN(Number(value))) return '—'
-  const amount = Number(value)
-  if (amount <= 0) return '—'
-  if (amount >= 1e7) return `₹${(amount / 1e7).toFixed(2)} Cr`
-  if (amount >= 1e5) return `₹${(amount / 1e5).toFixed(1)} L`
-  return `₹${Math.round(amount).toLocaleString('en-IN')}`
-}
-
-export default function ListingCard({ listing }) {
+export default function ListingCard({ listing, saved = false, onToggleSave, linkToDetail = true }) {
+  const id = listing.listing_id
   const bhk = listing.bedroom > 0 ? `${listing.bedroom} BHK` : titleCase(listing.property_type)
-  const area = listing.carpet_area
-    ? `${listing.carpet_area.toLocaleString('en-IN')} sqft`
-    : listing.super_built_up_area
-      ? `${listing.super_built_up_area.toLocaleString('en-IN')} sqft`
-      : '—'
+  const area = areaText(listing) || '—'
 
   return (
     <article className="listing-card">
+      {linkToDetail && id && (
+        <Link
+          className="listing-card-link"
+          to={`/listings/${encodeURIComponent(id)}`}
+          aria-label={`View details for ${listing.apartment_name || id}`}
+        />
+      )}
+
       <div className="listing-card-head">
         <h3 className="listing-title">
           {listing.apartment_name || listing.name || 'Untitled listing'}
         </h3>
-        <div className="listing-badges">
-          {listing.is_verified && <span className="chip chip-verified">✓ Verified</span>}
-          {listing.is_live && <span className="chip chip-live">● Live</span>}
-        </div>
+        <button
+          type="button"
+          className={`save-btn${saved ? ' saved' : ''}`}
+          aria-label={saved ? 'Remove from saved' : 'Save listing'}
+          aria-pressed={saved}
+          onClick={(event) => {
+            event.preventDefault()
+            event.stopPropagation()
+            onToggleSave?.(listing)
+          }}
+        >
+          {saved ? '♥' : '♡'}
+        </button>
       </div>
 
       <p className="listing-locality">{titleCase(listing.locality)}</p>
@@ -50,6 +53,11 @@ export default function ListingCard({ listing }) {
           <dd>{titleCase(listing.furnishing)}</dd>
         </div>
       </dl>
+
+      <div className="listing-badges">
+        {listing.is_verified && <span className="chip chip-verified">✓ Verified</span>}
+        {listing.is_live && <span className="chip chip-live">● Live</span>}
+      </div>
     </article>
   )
 }

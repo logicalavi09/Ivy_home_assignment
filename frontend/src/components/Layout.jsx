@@ -22,6 +22,18 @@ export default function Layout() {
             <NavLink to="/listings" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
               Listings
             </NavLink>
+            <NavLink to="/rentals" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
+              Rentals
+            </NavLink>
+            <NavLink to="/projects" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
+              Projects
+            </NavLink>
+            <NavLink to="/insights" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
+              Insights
+            </NavLink>
+            <NavLink to="/saved" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
+              Saved
+            </NavLink>
           </nav>
           <div className="topbar-right">
             <span className="topbar-user">{identity}</span>

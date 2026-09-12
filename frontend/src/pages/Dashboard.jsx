@@ -24,8 +24,8 @@ export default function Dashboard() {
           })
         }
       })
-      .catch((err) => {
-        if (!cancelled) setError(err?.message || 'Failed to load summary.')
+      .catch(() => {
+        if (!cancelled) setError('We couldn\u2019t load the dashboard right now. Please try again in a moment.')
       })
 
     return () => {
@@ -63,10 +63,16 @@ export default function Dashboard() {
             <div className="stat">
               <span className="stat-value">{summary.rentals.toLocaleString()}</span>
               <span className="stat-label">Rentals</span>
+              <Link className="stat-link" to="/rentals">
+                Browse →
+              </Link>
             </div>
             <div className="stat">
               <span className="stat-value">{summary.projects.toLocaleString()}</span>
               <span className="stat-label">Projects</span>
+              <Link className="stat-link" to="/projects">
+                Browse →
+              </Link>
             </div>
           </div>
         </section>

@@ -31,3 +31,21 @@ export const EMPTY_FILTERS = {
   minPrice: '',
   maxPrice: '',
 }
+
+const PRICE_LAKHS_TO_INR = 1e5
+
+export function filtersToParams(filters, pageSize = 50) {
+  const params = { limit: pageSize }
+  if (filters.locality) params.locality = filters.locality
+  if (filters.bhk) {
+    if (filters.bhk === '4+') {
+      params.bedroom_gte = 4
+    } else {
+      params.bedroom = Number(filters.bhk)
+    }
+  }
+  if (filters.furnishing) params.furnishing = filters.furnishing
+  if (filters.minPrice) params.min_price = Math.round(Number(filters.minPrice) * PRICE_LAKHS_TO_INR)
+  if (filters.maxPrice) params.max_price = Math.round(Number(filters.maxPrice) * PRICE_LAKHS_TO_INR)
+  return params
+}

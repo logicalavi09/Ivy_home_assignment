@@ -1,6 +1,6 @@
 import { BHK_OPTIONS, FURNISHING_OPTIONS, LOCALITIES } from '../listings/filterOptions'
 
-export default function ListingFilters({ filters, priceError, onChange, onApplyPrice, onReset }) {
+export default function ListingFilters({ filters, priceError, onChange, onApplyPrice, onReset, showPrice = true }) {
   const activeCount = [
     filters.locality,
     filters.bhk,
@@ -68,36 +68,38 @@ export default function ListingFilters({ filters, priceError, onChange, onApplyP
         </select>
       </div>
 
-      <div className="filter-group">
-        <label>Price range (₹ Lakhs)</label>
-        <div className="price-row">
-          <input
-            type="number"
-            inputMode="numeric"
-            min="0"
-            step="1"
-            placeholder="Min"
-            aria-label="Minimum price in lakhs"
-            value={filters.minPrice}
-            onChange={(event) => onChange({ ...filters, minPrice: event.target.value })}
-          />
-          <span aria-hidden="true">–</span>
-          <input
-            type="number"
-            inputMode="numeric"
-            min="0"
-            step="1"
-            placeholder="Max"
-            aria-label="Maximum price in lakhs"
-            value={filters.maxPrice}
-            onChange={(event) => onChange({ ...filters, maxPrice: event.target.value })}
-          />
+      {showPrice && (
+        <div className="filter-group">
+          <label>Price range (₹ Lakhs)</label>
+          <div className="price-row">
+            <input
+              type="number"
+              inputMode="numeric"
+              min="0"
+              step="1"
+              placeholder="Min"
+              aria-label="Minimum price in lakhs"
+              value={filters.minPrice}
+              onChange={(event) => onChange({ ...filters, minPrice: event.target.value })}
+            />
+            <span aria-hidden="true">–</span>
+            <input
+              type="number"
+              inputMode="numeric"
+              min="0"
+              step="1"
+              placeholder="Max"
+              aria-label="Maximum price in lakhs"
+              value={filters.maxPrice}
+              onChange={(event) => onChange({ ...filters, maxPrice: event.target.value })}
+            />
+          </div>
+          <button type="button" className="ghost small" onClick={onApplyPrice}>
+            Apply price
+          </button>
+          {priceError && <p className="bad filter-error">{priceError}</p>}
         </div>
-        <button type="button" className="ghost small" onClick={onApplyPrice}>
-          Apply price
-        </button>
-        {priceError && <p className="bad filter-error">{priceError}</p>}
-      </div>
+      )}
     </aside>
   )
 }
