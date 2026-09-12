@@ -1,8 +1,39 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import {
+  ArrowLeft,
+  Bath,
+  BedDouble,
+  Building2,
+  Car,
+  Compass,
+  DoorOpen,
+  Globe,
+  Home,
+  Layers,
+  Maximize2,
+  Ruler,
+  SearchX,
+  Sofa,
+} from 'lucide-react'
 import client from '../api/client'
+import EmptyState from '../components/EmptyState'
 import { useSaved } from '../saved/SavedContext'
 import { formatInr, titleCase } from '../listings/listingFormat'
+
+const FACT_ICONS = {
+  BHK: BedDouble,
+  Bathrooms: Bath,
+  Balconies: DoorOpen,
+  Floor: Layers,
+  Facing: Compass,
+  'Covered parking': Car,
+  'Carpet area': Ruler,
+  'Super built-up': Maximize2,
+  Furnishing: Sofa,
+  'Property type': Home,
+  Source: Globe,
+}
 
 function unwrapListing(data) {
   if (!data) return null
@@ -77,14 +108,17 @@ export default function ListingDetail() {
 
   if (!effectiveListing) {
     return (
-      <div className="card empty-state">
-        <h2>Listing not found</h2>
-        <p className="muted">
-          We couldn't find listing "{listingId}". It may not exist or is no longer available.
-        </p>
-        <Link className="ghost plain-link" to="/listings">
-          ← Back to listings
-        </Link>
+      <div className="card">
+        <EmptyState
+          icon={SearchX}
+          title="Listing not found"
+          message={`We couldn't find listing "${listingId}". It may not exist or is no longer available.`}
+          action={
+            <Link className="btn btn-primary" to="/listings">
+              ← Back to listings
+            </Link>
+          }
+        />
       </div>
     )
   }
@@ -128,7 +162,7 @@ export default function ListingDetail() {
   return (
     <article className="detail">
       <Link className="back-link" to="/listings">
-        ← Back to listings
+        <ArrowLeft size={15} aria-hidden="true" /> Back to listings
       </Link>
 
       <header className="detail-head">
@@ -162,12 +196,18 @@ export default function ListingDetail() {
           <h2>Facts &amp; features</h2>
           {facts.length > 0 ? (
             <dl className="facts-grid">
-              {facts.map((fact) => (
-                <div className="fact" key={fact.label}>
-                  <dt>{fact.label}</dt>
-                  <dd>{fact.value}</dd>
-                </div>
-              ))}
+              {facts.map((fact) => {
+                const Icon = FACT_ICONS[fact.label]
+                return (
+                  <div className="fact" key={fact.label}>
+                    <dt>
+                      {Icon && <Icon size={13} aria-hidden="true" />}
+                      {fact.label}
+                    </dt>
+                    <dd>{fact.value}</dd>
+                  </div>
+                )
+              })}
             </dl>
           ) : (
             <p className="muted">No curated facts are available for this property.</p>
@@ -190,7 +230,8 @@ export default function ListingDetail() {
               <p className="muted">N/A</p>
             )}
             {effectiveListing.project_id && (
-              <div className="project-chip" title="Project details are coming soon">
+              <div className="project-chip" title="Part of this project">
+                <Building2 size={13} aria-hidden="true" />
                 Project {effectiveListing.project_id}
               </div>
             )}

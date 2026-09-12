@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
+import { Activity, Home, IndianRupee, MapPin } from 'lucide-react'
 import client from '../api/client'
+import CountUp from '../components/CountUp'
 import IdListModal from '../components/IdListModal'
 import { formatInr, formatInrFull, titleCase } from '../listings/listingFormat'
 import {
@@ -39,10 +41,14 @@ function normalizeLocalities(raw) {
 
 function extractMedian(raw) {
   if (raw == null) return null
-  const value =
-    raw.median_price ?? raw.medianPrice ?? raw.price_median ?? raw['median price']
+  const value = raw.median_price ?? raw.medianPrice ?? raw.price_median ?? raw['median price']
   return value == null || Number.isNaN(Number(value)) ? null : Number(value)
 }
+
+const inrCount = (value) => value.toLocaleString('en-IN')
+const rupeeCount = (value) => formatInrFull(value)
+const avgCount = (value) =>
+  `₹${value.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
 
 function LocalityBars({ rows }) {
   const sorted = [...rows].sort((a, b) => b.value - a.value)
@@ -60,20 +66,6 @@ function LocalityBars({ rows }) {
       ))}
     </div>
   )
-}
-
-function statTiles(localities, median, total, active) {
-  const top = [...localities].sort((a, b) => b.value - a.value)[0]
-  return [
-    { label: 'Median price', value: formatInrFull(median), sub: `≈ ${formatInr(median)}` },
-    { label: 'Total listings', value: total.toLocaleString('en-IN') },
-    { label: 'Active listings', value: active.toLocaleString('en-IN') },
-    {
-      label: 'Top locality',
-      value: top ? titleCase(top.label) : '—',
-      sub: top ? `${top.value.toLocaleString('en-IN')} listings` : null,
-    },
-  ]
 }
 
 export default function Insights() {
@@ -124,7 +116,7 @@ export default function Insights() {
       ? Number(summary.active_listings)
       : VALIDATED_ACTIVE_LISTINGS
 
-  const tiles = statTiles(localityRows, medianPrice, totalListings, activeListings)
+  const top = [...localityRows].sort((a, b) => b.value - a.value)[0]
 
   const discrepancyRows = [
     {
@@ -189,9 +181,9 @@ export default function Insights() {
   ]
 
   const questions = [
-    { q: 'Q1', label: 'Total listable records on /v1/listings', answer: '3,800' },
-    { q: 'Q2', label: 'Unique properties (listing_id duplicates checked)', answer: '3,800' },
-    { q: 'Q3', label: 'Active listings (is_live = true)', answer: '2,998' },
+    { q: 'Q1', label: 'Total listable records on /v1/listings', n: 3800 },
+    { q: 'Q2', label: 'Unique properties (listing_id duplicates checked)', n: 3800 },
+    { q: 'Q3', label: 'Active listings (is_live = true)', n: 2998 },
     {
       q: 'Q4',
       label: 'Obvious corrupt / impossible listings',
@@ -201,15 +193,14 @@ export default function Insights() {
     {
       q: 'Q5',
       label: 'Total monthly rent — Hadapsar rentals',
-      answer: formatInrFull(ANSWERS.total_monthly_rent),
+      n: ANSWERS.total_monthly_rent,
+      fmt: rupeeCount,
     },
     {
       q: 'Q6',
       label: 'Average ₹ / sq ft — 2 BHK listings',
-      answer: `₹${Number(ANSWERS.avg_price_per_sqft_2bhk).toLocaleString('en-IN', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      })}`,
+      n: ANSWERS.avg_price_per_sqft_2bhk,
+      fmt: avgCount,
     },
     {
       q: 'Q7',
@@ -219,7 +210,7 @@ export default function Insights() {
     {
       q: 'Q8',
       label: 'Listings posted in the last 7 days',
-      answer: String(ANSWERS.listings_last_7_days),
+      n: ANSWERS.listings_last_7_days,
     },
     {
       q: 'Q9',
@@ -230,7 +221,7 @@ export default function Insights() {
     {
       q: 'Q10',
       label: 'Projects with a wrong reported listing count',
-      answer: String(ANSWERS.projects_with_wrong_listing_count),
+      n: ANSWERS.projects_with_wrong_listing_count,
     },
   ]
 
@@ -240,7 +231,10 @@ export default function Insights() {
     { label: 'Corrupt', value: ANSWERS.corrupt_listing_ids.length },
     { label: 'Fake', value: ANSWERS.fake_listing_ids.length },
   ]
-  const compositionTotal = Math.max(healthy + ANSWERS.corrupt_listing_ids.length + ANSWERS.fake_listing_ids.length, 1)
+  const compositionTotal = Math.max(
+    healthy + ANSWERS.corrupt_listing_ids.length + ANSWERS.fake_listing_ids.length,
+    1,
+  )
 
   return (
     <>
@@ -248,7 +242,7 @@ export default function Insights() {
         <h1>Insights Dashboard</h1>
         <p className="tagline">
           A two-part analyst view: the live <code>/v1/analytics/summary</code> endpoint, and the
-          data-discovery findings from our Phase 1 investigation. Answers match{' '}
+          data-discovery findings from our investigation. Answers match{' '}
           <code>submission.json</code> exactly.
         </p>
       </div>
@@ -264,7 +258,7 @@ export default function Insights() {
           <div className="skeleton skeleton-meta" />
         </div>
       ) : (
-        <section className="card">
+        <>
           {summaryStatus === 'fallback' && (
             <p className="notice" aria-live="polite">
               <code>GET /v1/analytics/summary</code> returned an error on the live API, so this
@@ -273,23 +267,57 @@ export default function Insights() {
             </p>
           )}
 
-          <div className="insights-grid">
-            <div className="stat-grid insight-stats">
-              {tiles.map((stat) => (
-                <div className="stat" key={stat.label}>
-                  <span className="stat-value">{stat.value}</span>
-                  <span className="stat-label">{stat.label}</span>
-                  {stat.sub && <span className="stat-sub">{stat.sub}</span>}
-                </div>
-              ))}
+          <div className="bento-grid insight-stats">
+            <div className="stat bento-wide">
+              <span className="stat-icon">
+                <IndianRupee size={19} aria-hidden="true" />
+              </span>
+              <span className="stat-value">
+                <CountUp to={medianPrice} format={rupeeCount} />
+              </span>
+              <span className="stat-label">Median listing price</span>
+              <span className="stat-sub">≈ {formatInr(medianPrice)} across priced listings</span>
             </div>
 
-            <div className="insights-chart">
-              <h3>Listings by locality</h3>
-              <LocalityBars rows={localityRows} />
+            <div className="stat bento-card">
+              <span className="stat-icon">
+                <Home size={19} aria-hidden="true" />
+              </span>
+              <span className="stat-value">
+                <CountUp to={totalListings} format={inrCount} />
+              </span>
+              <span className="stat-label">Total listings</span>
+            </div>
+
+            <div className="stat bento-card">
+              <span className="stat-icon">
+                <Activity size={19} aria-hidden="true" />
+              </span>
+              <span className="stat-value">
+                <CountUp to={activeListings} format={inrCount} />
+              </span>
+              <span className="stat-label">Active listings</span>
+            </div>
+
+            <div className="stat bento-card">
+              <span className="stat-icon">
+                <MapPin size={19} aria-hidden="true" />
+              </span>
+              <span className="stat-value">{top ? titleCase(top.label) : '—'}</span>
+              <span className="stat-label">Top locality</span>
+              {top && (
+                <span className="stat-sub">
+                  <CountUp to={top.value} format={inrCount} /> listings
+                </span>
+              )}
             </div>
           </div>
-        </section>
+
+          <section className="card">
+            <h3>Listings by locality</h3>
+            <LocalityBars rows={localityRows} />
+          </section>
+        </>
       )}
 
       <h2 className="section-title">Part B — Data Discovery: what the docs got wrong</h2>
@@ -368,7 +396,8 @@ export default function Insights() {
           {composition.map((segment) => (
             <span key={segment.label} className="stack-legend-item">
               <span className={`stack-dot ${segment.label.toLowerCase()}`} />
-              {segment.label} · {segment.value.toLocaleString('en-IN')}
+              {segment.label} ·{' '}
+              <CountUp to={segment.value} format={inrCount} />
             </span>
           ))}
         </div>
@@ -381,7 +410,9 @@ export default function Insights() {
             <div className="qa" key={item.q}>
               <span className="qa-q">{item.q}</span>
               <p className="qa-label">{item.label}</p>
-              <p className="qa-answer">{item.answer}</p>
+              <p className="qa-answer">
+                {item.n != null ? <CountUp to={item.n} format={item.fmt || inrCount} /> : item.answer}
+              </p>
               {item.ids && (
                 <button
                   type="button"

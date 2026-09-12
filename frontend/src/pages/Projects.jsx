@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
+import { Building2 } from 'lucide-react'
 import client from '../api/client'
+import EmptyState from '../components/EmptyState'
 import Pagination from '../components/Pagination'
 import ProjectCard from '../components/ProjectCard'
 import SkeletonGrid from '../components/SkeletonGrid'
@@ -65,15 +67,18 @@ export default function Projects() {
 
       <section className="listings-main">
         {error ? (
-          <div className="card bad">
-            <p>{error}</p>
+          <div className="card">
+            <EmptyState title="Something went wrong" message={error} />
           </div>
         ) : loading ? (
           <SkeletonGrid />
         ) : rows.length === 0 ? (
-          <div className="card empty-state">
-            <h2>No projects found</h2>
-            <p className="muted">There are no projects to show right now.</p>
+          <div className="card">
+            <EmptyState
+              icon={Building2}
+              title="No projects found"
+              message="There are no projects to show right now."
+            />
           </div>
         ) : (
           <>

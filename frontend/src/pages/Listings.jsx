@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
+import { SearchX } from 'lucide-react'
 import client from '../api/client'
+import EmptyState from '../components/EmptyState'
+import FilterPanel from '../components/FilterPanel'
 import ListingCard from '../components/ListingCard'
-import ListingFilters from '../components/ListingFilters'
 import Pagination from '../components/Pagination'
 import SearchBar from '../components/SearchBar'
 import SkeletonGrid from '../components/SkeletonGrid'
@@ -122,7 +124,7 @@ export default function Listings() {
       </div>
 
       <div className="listings-layout">
-        <ListingFilters
+        <FilterPanel
           filters={filters}
           priceError={priceError}
           onChange={handleFilterChange}
@@ -132,18 +134,23 @@ export default function Listings() {
 
         <section className="listings-main">
           {error ? (
-            <div className="card bad">
-              <p>{error}</p>
+            <div className="card">
+              <EmptyState title="Something went wrong" message={error} />
             </div>
           ) : loading ? (
             <SkeletonGrid />
           ) : rows.length === 0 ? (
-            <div className="card empty-state">
-              <h2>No results found</h2>
-              <p className="muted">No listings match the current filters.</p>
-              <button type="button" className="ghost" onClick={handleReset}>
-                Clear filters
-              </button>
+            <div className="card">
+              <EmptyState
+                icon={SearchX}
+                title="No listings found"
+                message="No listings match the current filters."
+                action={
+                  <button type="button" className="btn-primary" onClick={handleReset}>
+                    Clear filters
+                  </button>
+                }
+              />
             </div>
           ) : (
             <>
@@ -161,12 +168,17 @@ export default function Listings() {
                 </p>
               )}
               {visibleRows.length === 0 ? (
-                <div className="card empty-state">
-                  <h2>No matches</h2>
-                  <p className="muted">Nothing in these results matches "{query.trim()}".</p>
-                  <button type="button" className="ghost" onClick={() => setQuery('')}>
-                    Clear search
-                  </button>
+                <div className="card">
+                  <EmptyState
+                    icon={SearchX}
+                    title="No matches"
+                    message={`Nothing in these results matches "${query.trim()}".`}
+                    action={
+                      <button type="button" className="btn-primary" onClick={() => setQuery('')}>
+                        Clear search
+                      </button>
+                    }
+                  />
                 </div>
               ) : (
                 <div className="cards-grid">

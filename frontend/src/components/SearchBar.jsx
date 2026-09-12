@@ -1,6 +1,11 @@
+import { Search, X } from 'lucide-react'
+
 export default function SearchBar({ value, onChange, placeholder = 'Search apartments or keywords…' }) {
   return (
     <div className="search-bar">
+      <span className="search-icon" aria-hidden="true">
+        <Search size={16} />
+      </span>
       <input
         type="search"
         className="search-input"
@@ -16,7 +21,7 @@ export default function SearchBar({ value, onChange, placeholder = 'Search apart
           onClick={() => onChange('')}
           aria-label="Clear search"
         >
-          ×
+          <X size={15} aria-hidden="true" />
         </button>
       )}
     </div>

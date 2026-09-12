@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import { Building2, Circle, MapPin, Users } from 'lucide-react'
 import {
   formatCrorePrice,
   formatInrFull,
@@ -24,7 +26,14 @@ export default function ProjectCard({ project }) {
       : null
 
   return (
-    <article className="listing-card project-card">
+    <motion.article
+      className="listing-card project-card"
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-40px' }}
+      transition={{ duration: 0.32, ease: 'easeOut' }}
+      whileHover={{ y: -4, scale: 1.02 }}
+    >
       {project.project_id && (
         <Link
           className="listing-card-link"
@@ -37,7 +46,10 @@ export default function ProjectCard({ project }) {
         <h3 className="listing-title">{project.apartment_name || 'Untitled project'}</h3>
       </div>
 
-      <p className="listing-locality">{titleCase(project.locality)}</p>
+      <p className="listing-locality">
+        <MapPin size={13} aria-hidden="true" />
+        {titleCase(project.locality)}
+      </p>
 
       <p className="project-price">{priceRange}</p>
       <p className="project-price-inr">{inrRange}</p>
@@ -48,15 +60,21 @@ export default function ProjectCard({ project }) {
 
       <dl className="listing-meta">
         <div className="listing-meta-item">
-          <dt>Reported Listings</dt>
+          <dt>
+            <Building2 size={13} aria-hidden="true" /> Listings
+          </dt>
           <dd>{project.total_listings != null ? project.total_listings.toLocaleString('en-IN') : '—'}</dd>
         </div>
         <div className="listing-meta-item">
-          <dt>Units</dt>
+          <dt>
+            <Users size={13} aria-hidden="true" /> Units
+          </dt>
           <dd>{project.total_units != null ? project.total_units.toLocaleString('en-IN') : '—'}</dd>
         </div>
         <div className="listing-meta-item">
-          <dt>Status</dt>
+          <dt>
+            <Circle size={13} aria-hidden="true" /> Status
+          </dt>
           <dd>{titleCase(project.project_status)}</dd>
         </div>
       </dl>
@@ -77,6 +95,6 @@ export default function ProjectCard({ project }) {
           </a>
         )}
       </div>
-    </article>
+    </motion.article>
   )
 }

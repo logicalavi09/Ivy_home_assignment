@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import { ArrowLeft, Building2, Link2Off, SearchX } from 'lucide-react'
 import client from '../api/client'
+import EmptyState from '../components/EmptyState'
 import ListingCard from '../components/ListingCard'
 import SkeletonGrid from '../components/SkeletonGrid'
 import {
@@ -131,12 +133,17 @@ export default function ProjectDetail() {
 
   if (!project) {
     return (
-      <div className="card empty-state">
-        <h2>Project not found</h2>
-        <p className="muted">{projectError || 'This project could not be loaded.'}</p>
-        <Link className="ghost plain-link" to="/projects">
-          ← Back to projects
-        </Link>
+      <div className="card">
+        <EmptyState
+          icon={SearchX}
+          title="Project not found"
+          message={projectError || 'This project could not be loaded.'}
+          action={
+            <Link className="btn btn-primary" to="/projects">
+              ← Back to projects
+            </Link>
+          }
+        />
       </div>
     )
   }
@@ -162,7 +169,7 @@ export default function ProjectDetail() {
   return (
     <article className="detail">
       <Link className="back-link" to="/projects">
-        ← Back to projects
+        <ArrowLeft size={15} aria-hidden="true" /> Back to projects
       </Link>
 
       <header className="detail-head">
@@ -201,10 +208,16 @@ export default function ProjectDetail() {
         <aside className="detail-side">
           <section className="card">
             <h2>Listings in this project</h2>
-            <p className="posted-name">{listingRows.length} listing{listingRows.length === 1 ? '' : 's'} linked</p>
+            <p className="posted-name">
+              {listingLoading && !listingUnsupported ? (
+                <span className="skeleton skeleton-line" style={{ display: 'block', width: 120 }} />
+              ) : (
+                `${listingRows.length} listing${listingRows.length === 1 ? '' : 's'} linked`
+              )}
+            </p>
             <p className="muted">
               {listingLoading
-                ? 'Loading…'
+                ? 'Fetching listings…'
                 : listingUnsupported
                   ? 'The API did not filter listings by project; browse all listings instead.'
                   : 'Fetched from the listings endpoint by project_id.'}
@@ -218,16 +231,21 @@ export default function ProjectDetail() {
       {listingLoading ? (
         <SkeletonGrid />
       ) : listingRows.length === 0 ? (
-        <div className="card empty-state">
-          <h2>No listings linked</h2>
-          <p className="muted">
-            {listingUnsupported
-              ? 'The listings API did not return results filtered by this project id.'
-              : 'No listings are currently associated with this project.'}
-          </p>
-          <Link className="btn btn-primary" to="/listings">
-            Browse all listings
-          </Link>
+        <div className="card">
+          <EmptyState
+            icon={listingUnsupported ? Link2Off : Building2}
+            title="No listings linked"
+            message={
+              listingUnsupported
+                ? 'The listings API did not return results filtered by this project id.'
+                : 'No listings are currently associated with this project.'
+            }
+            action={
+              <Link className="btn btn-primary" to="/listings">
+                Browse all listings
+              </Link>
+            }
+          />
         </div>
       ) : (
         <div className="cards-grid">

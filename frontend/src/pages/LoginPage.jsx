@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import { Home } from 'lucide-react'
 import { useAuth } from '../auth/AuthContext'
 
 const DEMO_EMAIL = 'demo1@ivy.homes'
@@ -51,10 +53,15 @@ export default function LoginPage() {
 
   return (
     <main className="login-shell">
-      <div className="login-card">
+      <motion.div
+        className="login-card"
+        initial={{ opacity: 0, y: 18, scale: 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.35, ease: 'easeOut' }}
+      >
         <div className="login-brand">
           <span className="login-logo" aria-hidden="true">
-            Ivy
+            <Home size={24} />
           </span>
           <h1>Ivy Homes</h1>
           <p className="muted">Sign in to access listings, rentals, and projects.</p>
@@ -100,7 +107,7 @@ export default function LoginPage() {
         <p className="login-hint muted">
           Enter the demo password from your assignment to sign in.
         </p>
-      </div>
+      </motion.div>
     </main>
   )
 }

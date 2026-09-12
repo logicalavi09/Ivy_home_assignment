@@ -165,6 +165,25 @@ The API caps `limit` at 50 and paginates by `offset`/`limit` returning
 wrong — see §8). The UI pages through `has_more` until `false` so the true dataset size
 is always reached.
 
+### 5.5 Frontend design system
+
+The SPA ships a dedicated design system (`frontend/src/index.css`):
+
+- **Typography** — Inter (UI) + Plus Jakarta Sans (display) via Google Fonts.
+- **Palette** — Midnight Navy (`#14264a`) + Deep Teal (`#0d9488`) accents, soft gray
+  surfaces, CSS custom-property tokens, and a `prefers-color-scheme` dark mode.
+- **Layout** — fully fluid width (container + navbar) with responsive padding
+  (16/32/48px), glass sticky navbar with a Framer Motion route-transition wrapper,
+  grids that step 1 → 2 → 3 → 4 → 5 columns (mobile → ultra-wide), a mobile
+  hamburger menu, a slide-over filter drawer under 920px, and detail pages capped
+  at `max-width: 1536px` so they don't look like thin strips on wide monitors.
+- **Motion** — `framer-motion`: page fades, in-view card reveals with hover lift,
+  count-up stat tiles (`CountUp`), shimmer loading skeletons, and animated empty
+  states; a `prefers-reduced-motion` override disables animation.
+- **Icons** — `lucide-react` throughout (nav, cards, the facts grid, stats, filters).
+- **Chrome** — bento stat tiles, badge chips, verified/live markers, back-to-top
+  button, and accessible labels/aria on menus, drawers, and modals.
+
 ## 6. Methodology for Data Investigation
 
 1. **Read the documentation first.** Endpoints, request/response schemas and auth were
@@ -241,7 +260,8 @@ All answers are derived from the retrieved dataset and stored in `submission.jso
 │       ├── saved/                   # per-user saved listings (context + storage)
 │       ├── listings/                # shared formatters, filters, local search
 │       ├── insights/                # validated summary constants
-│       ├── components/              # cards, filters, pagination, search, modals
+│       ├── components/              # cards, filters, pagination, search, modals,
+│       │                            #  CountUp, EmptyState, BackToTop, FilterPanel
 │       └── pages/                   # Dashboard, Listings, Rentals, Projects,
 │                                    #  ListingDetail, ProjectDetail, Saved, Insights
 └── data/                   # raw API dumps — GITIGNORED (not tracked)

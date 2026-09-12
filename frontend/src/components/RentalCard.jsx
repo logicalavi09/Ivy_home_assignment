@@ -1,15 +1,27 @@
+import { motion } from 'framer-motion'
+import { BedDouble, MapPin, Ruler, Sofa } from 'lucide-react'
 import { areaText, formatInr, titleCase } from '../listings/listingFormat'
 
 export default function RentalCard({ rental }) {
   const bhk = rental.bedroom > 0 ? `${rental.bedroom} BHK` : titleCase(rental.property_type)
 
   return (
-    <article className="listing-card rental-card">
+    <motion.article
+      className="listing-card rental-card"
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-40px' }}
+      transition={{ duration: 0.32, ease: 'easeOut' }}
+      whileHover={{ y: -4, scale: 1.02 }}
+    >
       <div className="listing-card-head">
         <h3 className="listing-title">{rental.apartment_name || rental.title || 'Untitled rental'}</h3>
       </div>
 
-      <p className="listing-locality">{titleCase(rental.locality)}</p>
+      <p className="listing-locality">
+        <MapPin size={13} aria-hidden="true" />
+        {titleCase(rental.locality)}
+      </p>
 
       <div className="rent-price">
         <span className="rent-price-label">Monthly Rent</span>
@@ -18,15 +30,21 @@ export default function RentalCard({ rental }) {
 
       <dl className="listing-meta">
         <div className="listing-meta-item">
-          <dt>BHK</dt>
+          <dt>
+            <BedDouble size={13} aria-hidden="true" /> BHK
+          </dt>
           <dd>{bhk}</dd>
         </div>
         <div className="listing-meta-item">
-          <dt>Area</dt>
+          <dt>
+            <Ruler size={13} aria-hidden="true" /> Area
+          </dt>
           <dd>{areaText(rental) || '—'}</dd>
         </div>
         <div className="listing-meta-item">
-          <dt>Furnishing</dt>
+          <dt>
+            <Sofa size={13} aria-hidden="true" /> Furnishing
+          </dt>
           <dd>{titleCase(rental.furnishing)}</dd>
         </div>
       </dl>
@@ -52,6 +70,6 @@ export default function RentalCard({ rental }) {
         {rental.is_live && <span className="chip chip-live">● Live</span>}
         {rental.property_type && <span className="chip">{titleCase(rental.property_type)}</span>}
       </div>
-    </article>
+    </motion.article>
   )
 }
