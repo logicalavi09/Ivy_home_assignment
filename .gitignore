@@ -1,6 +1,7 @@
 # Secrets
 .env
 .env.*
+!.env.example
 *.key
 *.pem
 *.crt
@@ -29,3 +30,4 @@ build/
 .DS_Store
 .vscode/
 .idea/
+.vercel
